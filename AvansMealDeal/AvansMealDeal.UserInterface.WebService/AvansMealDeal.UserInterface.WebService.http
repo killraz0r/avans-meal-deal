@@ -1,0 +1,6 @@
+@AvansMealDeal.UserInterface.WebService_HostAddress = http://localhost:5149
+
+GET {{AvansMealDeal.UserInterface.WebService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
