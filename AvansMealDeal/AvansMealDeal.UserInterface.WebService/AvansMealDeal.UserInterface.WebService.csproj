@@ -7,11 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvansMealDeal.Application.Services\AvansMealDeal.Application.Services.csproj" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AvansMealDeal.Infrastructure.Application.SQLServer\AvansMealDeal.Infrastructure.Application.SQLServer.csproj" />
+    <ProjectReference Include="..\AvansMealDeal.Infrastructure.Identity.SQLServer\AvansMealDeal.Infrastructure.Identity.SQLServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AvansMealDeal.Application.Services\AvansMealDeal.Application.Services.csproj" />
+    <ProjectReference Include="..\AvansMealDeal.Infrastructure.Application.SQLServer\AvansMealDeal.Infrastructure.Application.SQLServer.csproj" />
+    <ProjectReference Include="..\AvansMealDeal.Infrastructure.Identity.SQLServer\AvansMealDeal.Infrastructure.Identity.SQLServer.csproj" />
   </ItemGroup>
 
 </Project>
