@@ -1,17 +1,28 @@
-using AvansMealDeal.UserInterface.WebApp.Data;
-using Microsoft.AspNetCore.Identity;
+using AvansMealDeal.Application.Services;
+using AvansMealDeal.Application.Services.Interfaces;
+using AvansMealDeal.Domain.Models;
+using AvansMealDeal.Domain.Services.Repositories;
+using AvansMealDeal.Infrastructure.Application.SQLServer;
+using AvansMealDeal.Infrastructure.Application.SQLServer.Repositories;
+using AvansMealDeal.Infrastructure.Identity.SQLServer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+// dependency injection domain services
+builder.Services.AddTransient<IMealRepository, SqlServerMealRepository>();
+builder.Services.AddTransient<IMealPackageRepository, SqlServerMealPackageRepository>();
+
+// dependency injection application services
+builder.Services.AddTransient<IMealService, MealService>();
+
+// add databases
+builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application")));
+builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Identity")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<MealDealUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DbContextIdentitySqlServer>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

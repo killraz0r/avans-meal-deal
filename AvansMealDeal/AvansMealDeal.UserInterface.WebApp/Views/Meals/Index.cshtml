@@ -1,0 +1,10 @@
+﻿@using AvansMealDeal.Domain.Models
+@model ICollection<Meal>
+
+@foreach (var meal in Model)
+{
+    <h1>Naam: @meal.Name</h1>
+    <h2>Bevat alcohol: @meal.ContainsAlcohol</h2>
+}
+
+<button>Voeg maaltijd toe</button>
