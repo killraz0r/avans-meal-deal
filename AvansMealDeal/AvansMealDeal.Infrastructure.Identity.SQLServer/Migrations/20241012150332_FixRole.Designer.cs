@@ -4,6 +4,7 @@ using AvansMealDeal.Infrastructure.Identity.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AvansMealDeal.Infrastructure.Identity.SQLServer.Migrations
 {
     [DbContext(typeof(DbContextIdentitySqlServer))]
-    partial class DbContextIdentitySqlServerModelSnapshot : ModelSnapshot
+    [Migration("20241012150332_FixRole")]
+    partial class FixRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

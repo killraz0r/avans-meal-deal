@@ -1,0 +1,14 @@
+﻿@using AvansMealDeal.Domain.Models
+@model ICollection<MealPackage>
+
+@foreach (var mealPackage in Model)
+{
+    <h1>Naam: @mealPackage.Name</h1>
+    <h1>Prijs: €@mealPackage.Price</h1>
+    <h1>Type: @mealPackage.MealPackageType</h1>
+    <h1>Deadline: @mealPackage.PickupDeadline</h1>
+    <h1>Adres: @mealPackage.Canteen.Address</h1>
+    <h1>Alleen voor volwassenen: @mealPackage.AdultsOnly()</h1>
+}
+
+<a asp-area="" asp-controller="Meals" asp-action="Add">Voeg maaltijd toe</a>

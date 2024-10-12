@@ -6,14 +6,17 @@ using AvansMealDeal.Infrastructure.Application.SQLServer;
 using AvansMealDeal.Infrastructure.Application.SQLServer.Repositories;
 using AvansMealDeal.Infrastructure.Identity.SQLServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // dependency injection domain services
+builder.Services.AddTransient<ICanteenRepository, SqlServerCanteenRepository>();
 builder.Services.AddTransient<IMealRepository, SqlServerMealRepository>();
 builder.Services.AddTransient<IMealPackageRepository, SqlServerMealPackageRepository>();
 
 // dependency injection application services
+builder.Services.AddTransient<ICanteenService, CanteenService>();
 builder.Services.AddTransient<IMealService, MealService>();
 
 // add databases
@@ -21,7 +24,8 @@ builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer
 builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Identity")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<MealDealUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<MealDealUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DbContextIdentitySqlServer>();
 builder.Services.AddControllersWithViews();
 

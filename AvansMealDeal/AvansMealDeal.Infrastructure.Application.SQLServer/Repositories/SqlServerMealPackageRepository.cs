@@ -1,5 +1,6 @@
 ﻿using AvansMealDeal.Domain.Models;
 using AvansMealDeal.Domain.Services.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
 {
@@ -17,9 +18,22 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<MealPackage>> ReadForLocation(City city)
+        public async Task<ICollection<MealPackage>> ReadForCity(City city)
         {
-            throw new NotImplementedException();
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Where(x => x.Canteen.City == city)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<MealPackage>> ReadForCanteen(int canteenId)
+        {
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Where(x => x.Canteen.Id == canteenId)
+                .ToListAsync();
         }
     }
 }
