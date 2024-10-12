@@ -5,6 +5,10 @@
 {
     <h1>Naam: @meal.Name</h1>
     <h2>Bevat alcohol: @meal.ContainsAlcohol</h2>
+    @if (@meal.Photo != null)
+    {
+        <img src="data:image/png;base64,@Convert.ToBase64String(meal.Photo)"/>
+    }
 }
 
-<button>Voeg maaltijd toe</button>
+<a asp-area="" asp-controller="Meals" asp-action="Add">Voeg maaltijd toe</a>

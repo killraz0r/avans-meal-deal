@@ -13,6 +13,11 @@ namespace AvansMealDeal.Application.Services
             this.mealRepository = mealRepository;
         }
 
+        public async Task Add(Meal meal)
+        {
+            await mealRepository.Create(meal);
+        }
+
         public async Task<ICollection<Meal>> GetAll()
         {
             return await mealRepository.ReadAll();

@@ -1,1 +1,27 @@
-﻿
+﻿@model AddMealViewModel
+<!-- meal adding form -->
+@using (Html.BeginForm("Add", "Meals", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div asp-validation-summary="All"></div>
+    <form asp-action="Add" method="post">
+		<!-- name -->
+		<label asp-for="Name">Naam:</label>
+		<input asp-for="Name" />
+		<span asp-validation-for="Name"></span>
+
+		<!-- contains alcohol -->
+		<label asp-for="ContainsAlcohol">Bevat alcohol?</label>
+		<select asp-for="ContainsAlcohol">
+			<option value="False">Nee</option>
+			<option value="True">Ja</option>
+		</select>
+		<span asp-validation-for="ContainsAlcohol"></span>
+
+		<!-- photo -->
+		<label asp-for="Photo">Foto:</label>
+		<input asp-for="Photo" type="file">
+		<span asp-validation-for="Photo"></span>
+
+		<button>Voeg toe</button>
+	</form>
+}
