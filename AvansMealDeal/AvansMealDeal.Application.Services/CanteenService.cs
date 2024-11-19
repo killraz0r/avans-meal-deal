@@ -17,5 +17,10 @@ namespace AvansMealDeal.Application.Services
         {
             return await canteenRepository.ReadAll();
         }
+
+        public async Task<Canteen> GetById(int id)
+        {
+            return await canteenRepository.ReadById(id);
+        }
     }
 }

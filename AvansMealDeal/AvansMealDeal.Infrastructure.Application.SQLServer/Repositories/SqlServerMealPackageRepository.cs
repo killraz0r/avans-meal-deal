@@ -13,9 +13,10 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task Create(MealPackage mealPackage)
+        public async Task Create(MealPackage mealPackage)
         {
-            throw new NotImplementedException();
+            dbContext.MealsPackages.Add(mealPackage);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<ICollection<MealPackage>> ReadForCity(City city)
@@ -24,6 +25,7 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
                 .Where(x => x.Canteen.City == city)
+                .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
 
@@ -33,6 +35,7 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
                 .Where(x => x.Canteen.Id == canteenId)
+                .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
     }

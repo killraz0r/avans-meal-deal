@@ -18,6 +18,7 @@ builder.Services.AddTransient<IMealPackageRepository, SqlServerMealPackageReposi
 // dependency injection application services
 builder.Services.AddTransient<ICanteenService, CanteenService>();
 builder.Services.AddTransient<IMealService, MealService>();
+builder.Services.AddTransient<IMealPackageService, MealPackageService>();
 
 // add databases
 builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application")));

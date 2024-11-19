@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvansMealDeal.Tests", "Avan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvansMealDeal.Infrastructure.Application.SQLServer", "AvansMealDeal.Infrastructure.Application.SQLServer\AvansMealDeal.Infrastructure.Application.SQLServer.csproj", "{6D182B0E-5034-485A-BCE2-751F8138F205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvansMealDeal.Infrastructure.Identity.SQLServer", "AvansMealDeal.Infrastructure.Identity.SQLServer\AvansMealDeal.Infrastructure.Identity.SQLServer.csproj", "{DBF66608-33E2-468D-8D96-651265AED800}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvansMealDeal.Infrastructure.Identity.SQLServer", "AvansMealDeal.Infrastructure.Identity.SQLServer\AvansMealDeal.Infrastructure.Identity.SQLServer.csproj", "{DBF66608-33E2-468D-8D96-651265AED800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvansMealDeal.UserInterface.WebApp", "AvansMealDeal.UserInterface.WebApp\AvansMealDeal.UserInterface.WebApp.csproj", "{74627A9A-6A31-42AC-B990-6F1BAC0A0D8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvansMealDeal.UserInterface.WebApp", "AvansMealDeal.UserInterface.WebApp\AvansMealDeal.UserInterface.WebApp.csproj", "{74627A9A-6A31-42AC-B990-6F1BAC0A0D8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvansMealDeal.UserInterface.WebService", "AvansMealDeal.UserInterface.WebService\AvansMealDeal.UserInterface.WebService.csproj", "{4344209D-CB90-47B3-8E21-3CE845971691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvansMealDeal.UserInterface.WebService", "AvansMealDeal.UserInterface.WebService\AvansMealDeal.UserInterface.WebService.csproj", "{4344209D-CB90-47B3-8E21-3CE845971691}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

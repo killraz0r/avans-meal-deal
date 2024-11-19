@@ -1,0 +1,30 @@
+﻿@using AvansMealDeal.Domain.Models
+@model AddMealPackageViewModel
+<!-- meal package adding form -->
+@using (Html.BeginForm("Add", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div asp-validation-summary="All"></div>
+	<form asp-action="Add" method="post">
+		<!-- name -->
+		<label asp-for="Name">Naam:</label>
+		<input asp-for="Name" />
+		<span asp-validation-for="Name"></span>
+
+		<!-- price -->
+		<label asp-for="Price">Prijs:</label>
+		<input asp-for="Price" />
+		<span asp-validation-for="Price"></span>
+
+		<!-- meal package type -->
+		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
+		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		<span asp-validation-for="MealPackageType"></span>
+
+		<!-- pickup deadline -->
+		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
+		<input asp-for="PickupDeadline" />
+		<span asp-validation-for="PickupDeadline"></span>
+
+		<button>Voeg toe</button>
+	</form>
+}

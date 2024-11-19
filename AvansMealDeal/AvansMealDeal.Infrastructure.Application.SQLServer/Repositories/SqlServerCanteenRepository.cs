@@ -17,5 +17,10 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
         {
             return await dbContext.Canteens.ToListAsync();
         }
+
+        public async Task<Canteen> ReadById(int id)
+        {
+            return await dbContext.Canteens.SingleAsync(x => x.Id == id);
+        }
     }
 }
