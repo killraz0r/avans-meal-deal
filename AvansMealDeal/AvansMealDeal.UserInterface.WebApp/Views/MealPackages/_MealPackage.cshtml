@@ -1,0 +1,11 @@
+﻿@using AvansMealDeal.Domain.Models
+@model MealPackage
+
+<div>
+    <h1>Naam: @Model.Name</h1>
+    <h2>Prijs: €@Model.Price</h2>
+    <h3>Type: @Model.MealPackageType</h3>
+    <h4>Deadline: @Model.PickupDeadline</h4>
+    <h5>Adres: @Model.Canteen.Address</h5>
+    <h6>Alleen voor volwassenen: @Model.AdultsOnly()</h6>
+</div>

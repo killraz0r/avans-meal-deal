@@ -19,11 +19,22 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ICollection<MealPackage>> ReadForCity(City city)
+        public async Task AddMealToPackage(int mealPackageId, int mealId)
+        {
+            dbContext.MealPackageItems.Add(new MealPackageItem
+            {
+                MealId = mealId,
+                MealPackageId = mealPackageId
+            });
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<ICollection<MealPackage>> ReadForCity(City city)
         {
             return await dbContext.MealsPackages
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
+                .Include(x => x.Meals).ThenInclude(x => x.Meal)
                 .Where(x => x.Canteen.City == city)
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
@@ -34,7 +45,8 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
             return await dbContext.MealsPackages
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
-                .Where(x => x.Canteen.Id == canteenId)
+				.Include(x => x.Meals).ThenInclude(x => x.Meal)
+				.Where(x => x.Canteen.Id == canteenId)
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }

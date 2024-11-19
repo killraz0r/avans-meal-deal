@@ -11,11 +11,13 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
     {
         private readonly UserManager<MealDealUser> userManager;
         private readonly IMealPackageService mealPackageService;
+        private readonly IMealService mealService;
 
-        public MealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService)
+        public MealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService, IMealService mealService)
         {
             this.userManager = userManager;
             this.mealPackageService = mealPackageService;
+            this.mealService = mealService;
         }
 
         public async Task<IActionResult> Index()
@@ -39,17 +41,18 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
         }
 
 		[HttpGet]
-		public IActionResult Add()
+		public async Task<IActionResult> Add()
 		{
-			return View("Add");
+            var meals = await mealService.GetAll();
+			return View("Add", new AddMealPackageViewModel { Meals = meals });
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> Add(AddMealPackageViewModel mealPackage)
+        public async Task<IActionResult> Add(AddMealPackageViewModel mealPackage, List<int> mealIds)
         {
 			if (!ModelState.IsValid)
 			{
-				return Add();
+				return await Add();
 			}
 
             // get canteen the meal package will be sold in from the employee
@@ -57,7 +60,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
 			var user = await userManager.FindByIdAsync(userId!);
             var canteenId = (int)user!.EmployeeCanteenId!; // canteen id cannot be null here
 			
-            await mealPackageService.Add(mealPackage.GetModel(canteenId));
+            await mealPackageService.Add(mealPackage.GetModel(canteenId), mealIds);
 			return await Index();
 		}
     }

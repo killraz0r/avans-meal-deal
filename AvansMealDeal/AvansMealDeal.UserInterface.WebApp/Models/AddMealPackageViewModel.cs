@@ -5,6 +5,9 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 {
     public class AddMealPackageViewModel
     {
+		// all meals in the system
+		public ICollection<Meal> Meals { get; set; } = new List<Meal>(); // fallback to prevent null reference error
+
 		[Required(ErrorMessage = "Naam van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.Text)]
 		[Display(Name = "Naam")]

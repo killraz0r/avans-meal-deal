@@ -10,7 +10,8 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer
         public DbSet<Canteen> Canteens { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<MealPackage> MealsPackages { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
+		public DbSet<MealPackageItem> MealPackageItems { get; set; }
+		public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

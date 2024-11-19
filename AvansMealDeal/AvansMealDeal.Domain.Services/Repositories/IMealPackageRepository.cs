@@ -6,6 +6,7 @@ namespace AvansMealDeal.Domain.Services.Repositories
     public interface IMealPackageRepository
     {
         Task Create(MealPackage mealPackage);
+        Task AddMealToPackage(int mealPackageId, int mealId);
         Task<ICollection<MealPackage>> ReadForCity(City city);
         Task<ICollection<MealPackage>> ReadForCanteen(int canteenId);
     }

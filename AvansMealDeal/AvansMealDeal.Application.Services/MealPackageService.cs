@@ -13,9 +13,13 @@ namespace AvansMealDeal.Application.Services
             this.mealPackageRepository = mealPackageRepository;
         }
 
-		public async Task Add(MealPackage mealPackage)
+		public async Task Add(MealPackage mealPackage, ICollection<int> mealIds)
 		{
-            await mealPackageRepository.Create(mealPackage);
+			await mealPackageRepository.Create(mealPackage);
+            foreach (var mealId in mealIds) 
+            {
+                await mealPackageRepository.AddMealToPackage(mealPackage.Id, mealId);
+            }
 		}
 
 		public async Task<ICollection<MealPackage>> GetForCanteen(int canteenId)
