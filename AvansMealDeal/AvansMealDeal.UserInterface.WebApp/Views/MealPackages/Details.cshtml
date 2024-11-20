@@ -1,29 +1,29 @@
 ﻿@using AvansMealDeal.Domain.Models
-@model MealPackage
+@model MealPackageDetailsViewModel
 <!-- meal package details form -->
 @using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div asp-validation-summary="All"></div>
 	<form asp-action="Edit" method="post">
 		<!-- name -->
-		<label asp-for="Name">Naam:</label>
-		<input asp-for="Name" />
-		<span asp-validation-for="Name"></span>
+		<label asp-for="MealPackage.Name">Naam:</label>
+		<input asp-for="MealPackage.Name" />
+		<span asp-validation-for="MealPackage.Name"></span>
 
 		<!-- price -->
-		<label asp-for="Price">Prijs:</label>
-		<input asp-for="Price" />
-		<span asp-validation-for="Price"></span>
+		<label asp-for="MealPackage.Price">Prijs:</label>
+		<input asp-for="MealPackage.Price" />
+		<span asp-validation-for="MealPackage.Price"></span>
 
 		<!-- meal package type -->
-		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
-		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
-		<span asp-validation-for="MealPackageType"></span>
+		<label asp-for="MealPackage.MealPackageType">Type maaltijdpakket:</label>
+		<select asp-for="MealPackage.MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		<span asp-validation-for="MealPackage.MealPackageType"></span>
 
 		<!-- pickup deadline -->
-		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
-		<input asp-for="PickupDeadline" />
-		<span asp-validation-for="PickupDeadline"></span>
+		<label asp-for="MealPackage.PickupDeadline">Ophaaltijdstip:</label>
+		<input asp-for="MealPackage.PickupDeadline" />
+		<span asp-validation-for="MealPackage.PickupDeadline"></span>
 
 		<!-- meals to add to the meal package -->
 		<table>
@@ -36,9 +36,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var meal in Model.Meals.Select(x => x.Meal))
+				@foreach (var meal in Model.Meals)
 				{
-					@await Html.PartialAsync("_MealPackageMeal", meal)
+					var mealIsSelectedInPackage = Model.MealPackage.Meals.Any(x => x.MealId == meal.Id);
+					@await Html.PartialAsync("_MealPackageMeal", new MealPackageMealViewModel(meal, mealIsSelectedInPackage))
 				}
 			</tbody>
 		</table>

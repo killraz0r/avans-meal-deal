@@ -47,7 +47,8 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View("Details", mealPackage);
+			var meals = await mealService.GetAll();
+			return View("Details", new MealPackageDetailsViewModel { MealPackage = mealPackage, Meals = meals } );
         }
 
 		[HttpGet]

@@ -1,5 +1,4 @@
-﻿@using AvansMealDeal.Domain.Models
-@model Meal
+﻿@model MealPackageMealViewModel
 
 <tr>
     <td style="height: 52px">
@@ -11,6 +10,6 @@
     <td>@Model.Name</td>
     <td>@Model.ContainsAlcohol</td>
     <td>
-        <input type="checkbox" name="mealIds" value="@Model.Id" />
+        <input type="checkbox" name="mealIds" value="@Model.Id" @(Model.Selected ? "checked" : "") />
     </td>
 </tr>
