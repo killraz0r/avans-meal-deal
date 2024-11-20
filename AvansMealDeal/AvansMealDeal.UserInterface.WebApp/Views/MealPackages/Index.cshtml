@@ -4,8 +4,7 @@
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
-    <button>Bewerk</button>
-    <button>Verwijder</button>
+        <a asp-area="" asp-controller="MealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
 }
-
-<a asp-area="" asp-controller="MealPackages" asp-action="Add">Voeg maaltijdpakket toe</a>
+<br />
+<a asp-area="" asp-controller="MealPackages" asp-action="Add" >Voeg maaltijdpakket toe</a>

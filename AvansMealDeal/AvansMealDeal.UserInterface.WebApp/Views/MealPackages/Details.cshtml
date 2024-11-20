@@ -1,0 +1,48 @@
+﻿@using AvansMealDeal.Domain.Models
+@model MealPackage
+<!-- meal package details form -->
+@using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div asp-validation-summary="All"></div>
+	<form asp-action="Edit" method="post">
+		<!-- name -->
+		<label asp-for="Name">Naam:</label>
+		<input asp-for="Name" />
+		<span asp-validation-for="Name"></span>
+
+		<!-- price -->
+		<label asp-for="Price">Prijs:</label>
+		<input asp-for="Price" />
+		<span asp-validation-for="Price"></span>
+
+		<!-- meal package type -->
+		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
+		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		<span asp-validation-for="MealPackageType"></span>
+
+		<!-- pickup deadline -->
+		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
+		<input asp-for="PickupDeadline" />
+		<span asp-validation-for="PickupDeadline"></span>
+
+		<!-- meals to add to the meal package -->
+		<table>
+			<thead>
+				<tr>
+					<th>Foto</th>
+					<th>Naam</th>
+					<th>Bevat alcohol</th>
+					<th>Onderdeel van maaltijdpakket?</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var meal in Model.Meals.Select(x => x.Meal))
+				{
+					@await Html.PartialAsync("_MealPackageMeal", meal)
+				}
+			</tbody>
+		</table>
+
+		<button>Bewerk</button>
+	</form>
+}

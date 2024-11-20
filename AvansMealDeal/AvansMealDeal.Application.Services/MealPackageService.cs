@@ -22,7 +22,12 @@ namespace AvansMealDeal.Application.Services
             }
 		}
 
-		public async Task<ICollection<MealPackage>> GetForCanteen(int canteenId)
+        public async Task<MealPackage?> GetById(int id)
+        {
+            return await mealPackageRepository.ReadById(id);
+        }
+
+        public async Task<ICollection<MealPackage>> GetForCanteen(int canteenId)
         {
             return await mealPackageRepository.ReadForCanteen(canteenId);
         }

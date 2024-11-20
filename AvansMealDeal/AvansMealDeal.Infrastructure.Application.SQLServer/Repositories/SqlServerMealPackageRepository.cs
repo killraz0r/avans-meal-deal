@@ -29,6 +29,15 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
 			await dbContext.SaveChangesAsync();
 		}
 
+        public async Task<MealPackage?> ReadById(int id)
+        {
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Include(x => x.Meals).ThenInclude(x => x.Meal)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
 		public async Task<ICollection<MealPackage>> ReadForCity(City city)
         {
             return await dbContext.MealsPackages
