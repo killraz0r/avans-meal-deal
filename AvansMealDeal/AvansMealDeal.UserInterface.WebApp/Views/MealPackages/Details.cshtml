@@ -4,7 +4,7 @@
 @using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div asp-validation-summary="All"></div>
-	<forsm asp-action="Edit" method="post">
+	<form asp-action="Edit" method="post">
 		<!-- needed id values for editing to work -->
 		<input type="hidden" asp-for="Id" />
 		<input type="hidden" asp-for="ReservationId" />
@@ -49,5 +49,9 @@
 		</table>
 
 		<button>Bewerk</button>
-	</forsm>
+	</form>
+	<form asp-action="Remove" method="post">
+		<input type="hidden" asp-for="Id" />
+		<button>Verwijder</button>
+	</form>
 }

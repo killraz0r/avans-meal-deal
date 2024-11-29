@@ -72,6 +72,13 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
 			return await Details(mealPackageDetails.Id);
 		}
 
+        [HttpPost]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await mealPackageService.Remove(id);
+            return await Index();
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{

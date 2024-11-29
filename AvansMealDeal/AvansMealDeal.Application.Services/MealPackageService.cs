@@ -41,6 +41,13 @@ namespace AvansMealDeal.Application.Services
 			}
 		}
 
+        public async Task Remove(int id)
+        {
+			var mealPackage = await GetById(id);
+			// null suppressed because meal package exists in the database
+			await mealPackageRepository.Delete(mealPackage!);
+		}
+
 		public async Task<MealPackage?> GetById(int id)
         {
             return await mealPackageRepository.ReadById(id);
