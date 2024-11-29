@@ -1,4 +1,5 @@
 ﻿using AvansMealDeal.Domain.Models;
+using AvansMealDeal.Domain.Models.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace AvansMealDeal.UserInterface.WebApp.Models
@@ -15,6 +16,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 
 		[Required(ErrorMessage = "Prijs van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.Currency)]
+		[Range(0.01, 9999.99, ErrorMessage = "Prijs van het maaltijdpakket moet tussen €0,01 en €9999,99 liggen")]
 		[Display(Name = "Prijs")]
 		public decimal? Price { get; set; }
 
@@ -25,6 +27,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		[Required(ErrorMessage = "Ophaaltijdstip van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.DateTime)]
 		[Display(Name = "Ophaaltijdstip")]
+		[PickupDeadlineValidation]
 		public DateTimeOffset? PickupDeadline { get; set; }
 
 		// convert view model to model
