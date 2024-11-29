@@ -5,6 +5,7 @@
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
         <a asp-area="" asp-controller="MealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
+    <br />
 }
 <br />
 <a asp-area="" asp-controller="MealPackages" asp-action="Add" >Voeg maaltijdpakket toe</a>

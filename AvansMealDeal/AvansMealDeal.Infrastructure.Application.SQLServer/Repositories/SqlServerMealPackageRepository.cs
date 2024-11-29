@@ -65,7 +65,7 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
                 .Include(x => x.Meals).ThenInclude(x => x.Meal)
-                .Where(x => x.Canteen.City == city)
+                .Where(x => x.Canteen.City == city && x.PickupDeadline >= DateTimeOffset.Now)
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
@@ -76,7 +76,7 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .Include(x => x.Canteen)
                 .Include(x => x.Reservation)
 				.Include(x => x.Meals).ThenInclude(x => x.Meal)
-				.Where(x => x.Canteen.Id == canteenId)
+				.Where(x => x.Canteen.Id == canteenId && x.PickupDeadline >= DateTimeOffset.Now)
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }

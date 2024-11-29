@@ -8,6 +8,7 @@
 		<label asp-for="Name">Naam:</label>
 		<input asp-for="Name" />
 		<span asp-validation-for="Name"></span>
+		<br />
 
 		<!-- contains alcohol -->
 		<label asp-for="ContainsAlcohol">Bevat alcohol?</label>
@@ -16,11 +17,13 @@
 			<option value="True">Ja</option>
 		</select>
 		<span asp-validation-for="ContainsAlcohol"></span>
+		<br />
 
 		<!-- photo -->
 		<label asp-for="Photo">Foto:</label>
 		<input asp-for="Photo" type="file">
 		<span asp-validation-for="Photo"></span>
+		<br />
 
 		<button>Voeg toe</button>
 	</form>

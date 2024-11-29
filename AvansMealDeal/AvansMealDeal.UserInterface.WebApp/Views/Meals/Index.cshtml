@@ -1,14 +1,17 @@
 ﻿@using AvansMealDeal.Domain.Models
+@using AvansMealDeal.UserInterface.WebApp.Helpers
 @model ICollection<Meal>
 
 @foreach (var meal in Model)
 {
-    <h1>Naam: @meal.Name</h1>
-    <h2>Bevat alcohol: @meal.ContainsAlcohol</h2>
+    <h3>Naam: @meal.Name</h3>
+    <h6>Bevat alcohol: @HtmlHelpers.DisplayDutchBoolean(@meal.ContainsAlcohol)</h6>
     @if (@meal.Photo != null)
     {
-        <img src="data:image/png;base64,@Convert.ToBase64String(meal.Photo)"/>
+        <img src="data:image/png;base64,@Convert.ToBase64String(meal.Photo)" style="width:100px; height:100px;" />
+        <br />
     }
+    <br />
 }
 
 <a asp-area="" asp-controller="Meals" asp-action="Add">Voeg maaltijd toe</a>

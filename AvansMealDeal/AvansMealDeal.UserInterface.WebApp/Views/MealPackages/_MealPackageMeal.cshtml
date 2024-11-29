@@ -1,4 +1,5 @@
-﻿@model MealPackageMealViewModel
+﻿@using AvansMealDeal.UserInterface.WebApp.Helpers
+@model MealPackageMealViewModel
 
 <tr>
     <td style="height: 52px">
@@ -8,7 +9,7 @@
         }
     </td>
     <td>@Model.Name</td>
-    <td>@Model.ContainsAlcohol</td>
+    <td>@HtmlHelpers.DisplayDutchBoolean(Model.ContainsAlcohol)</td>
     <td>
         <input type="checkbox" name="mealIds" value="@Model.Id" @(Model.Selected ? "checked" : "") />
     </td>

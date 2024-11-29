@@ -37,6 +37,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 
 		// if this is not null, a reservation was placed on the meal package
 		public int? ReservationId { get; set; }
+		public bool HasReservation => ReservationId != null;
 
 		// convert view model to model
 		public MealPackage GetModel()

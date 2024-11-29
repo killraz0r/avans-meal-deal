@@ -1,4 +1,4 @@
-﻿@using AvansMealDeal.Domain.Models
+@using AvansMealDeal.Domain.Models
 @model MealPackageDetailsViewModel
 <!-- meal package details form -->
 @using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -36,7 +36,7 @@
 			var maxValue = now.AddHours(48).ToString("yyyy-MM-ddTHH:mm");
 		}
 		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
-		<input asp-for="PickupDeadline" min="@minValue" max="@maxValue" value="@maxValue" type="datetime-local" />
+		<input asp-for="PickupDeadline" min="@minValue" max="@maxValue" value="@Model.PickupDeadline!.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" />
 		<span asp-validation-for="PickupDeadline"></span>
 		<br />
 
@@ -44,10 +44,10 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Foto</th>
-					<th>Naam</th>
-					<th>Bevat alcohol</th>
-					<th>Onderdeel van maaltijdpakket?</th>
+					<th>Foto   </th>
+					<th>Naam   </th>
+					<th>Bevat alcohol   </th>
+					<th>Onderdeel van maaltijdpakket?   </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,10 +59,20 @@
 			</tbody>
 		</table>
 
-		<button>Bewerk</button>
+		@if (!Model.HasReservation)
+		{
+			<button>Bewerk</button>
+		}
+		else
+		{
+			<h3>Het maaltijdpakket heeft een reservering en kan dus niet bewerkt of verwijderd worden</h3>
+		}
 	</form>
-	<form asp-action="Remove" method="post">
-		<input type="hidden" asp-for="Id" />
-		<button>Verwijder</button>
-	</form>
+	@if (!Model.HasReservation)
+	{
+		<form asp-action="Remove" method="post">
+			<input type="hidden" asp-for="Id" />
+			<button>Verwijder</button>
+		</form>
+	}
 }
