@@ -47,9 +47,30 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             {
                 return NotFound();
             }
-			var meals = await mealService.GetAll();
-			return View("Details", new MealPackageDetailsViewModel { MealPackage = mealPackage, Meals = meals } );
+			var systemMeals = await mealService.GetAll();
+			return View("Details", new MealPackageDetailsViewModel 
+            {
+                SystemMeals = systemMeals,
+                SelectedMeals = mealPackage.Meals.Select(x => x.Meal).ToList(),
+                Id = mealPackage.Id,
+                Name = mealPackage.Name,
+                Price = mealPackage.Price,
+                MealPackageType = mealPackage.MealPackageType,
+                PickupDeadline = mealPackage.PickupDeadline,
+                ReservationId = mealPackage.ReservationId,
+            });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(MealPackageDetailsViewModel mealPackageDetails, List<int> mealIds)
+        {
+			if (ModelState.IsValid)
+			{
+				await mealPackageService.Edit(mealPackageDetails.GetModel(), mealIds);
+			}
+
+			return await Details(mealPackageDetails.Id);
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> Add()

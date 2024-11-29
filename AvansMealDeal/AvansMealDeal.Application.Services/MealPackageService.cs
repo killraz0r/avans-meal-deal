@@ -22,7 +22,26 @@ namespace AvansMealDeal.Application.Services
             }
 		}
 
-        public async Task<MealPackage?> GetById(int id)
+		public async Task Edit(MealPackage mealPackage, ICollection<int> mealIds)
+		{
+            var mealPackageInDatabase = await GetById(mealPackage.Id);
+
+            // null suppressed because meal package exists in the database
+            mealPackageInDatabase!.Name = mealPackage.Name;
+            mealPackageInDatabase.Price = mealPackage.Price;
+            mealPackageInDatabase.MealPackageType = mealPackage.MealPackageType;
+            mealPackageInDatabase.PickupDeadline = mealPackage.PickupDeadline;
+
+			await mealPackageRepository.Update(mealPackageInDatabase);
+            // replace the old list of meals with the new list of meals
+			await mealPackageRepository.ClearMealsFromPackage(mealPackageInDatabase);
+			foreach (var mealId in mealIds)
+			{
+				await mealPackageRepository.AddMealToPackage(mealPackage.Id, mealId);
+			}
+		}
+
+		public async Task<MealPackage?> GetById(int id)
         {
             return await mealPackageRepository.ReadById(id);
         }

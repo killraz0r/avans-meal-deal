@@ -19,7 +19,22 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task AddMealToPackage(int mealPackageId, int mealId)
+		public async Task Update(MealPackage mealPackage)
+        {
+            dbContext.MealsPackages.Update(mealPackage);
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task ClearMealsFromPackage(MealPackage mealPackage)
+        {
+            foreach (var item in dbContext.MealPackageItems.Where(x => x.MealPackageId == mealPackage.Id))
+            {
+                dbContext.MealPackageItems.Remove(item);
+            }
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task AddMealToPackage(int mealPackageId, int mealId)
         {
             dbContext.MealPackageItems.Add(new MealPackageItem
             {

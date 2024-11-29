@@ -4,26 +4,30 @@
 @using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div asp-validation-summary="All"></div>
-	<form asp-action="Edit" method="post">
+	<forsm asp-action="Edit" method="post">
+		<!-- needed id values for editing to work -->
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="ReservationId" />
+
 		<!-- name -->
-		<label asp-for="MealPackage.Name">Naam:</label>
-		<input asp-for="MealPackage.Name" />
-		<span asp-validation-for="MealPackage.Name"></span>
+		<label asp-for="Name">Naam:</label>
+		<input asp-for="Name" />
+		<span asp-validation-for="Name"></span>
 
 		<!-- price -->
-		<label asp-for="MealPackage.Price">Prijs:</label>
-		<input asp-for="MealPackage.Price" />
-		<span asp-validation-for="MealPackage.Price"></span>
+		<label asp-for="Price">Prijs:</label>
+		<input asp-for="Price" />
+		<span asp-validation-for="Price"></span>
 
 		<!-- meal package type -->
-		<label asp-for="MealPackage.MealPackageType">Type maaltijdpakket:</label>
-		<select asp-for="MealPackage.MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
-		<span asp-validation-for="MealPackage.MealPackageType"></span>
+		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
+		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		<span asp-validation-for="MealPackageType"></span>
 
 		<!-- pickup deadline -->
-		<label asp-for="MealPackage.PickupDeadline">Ophaaltijdstip:</label>
-		<input asp-for="MealPackage.PickupDeadline" />
-		<span asp-validation-for="MealPackage.PickupDeadline"></span>
+		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
+		<input asp-for="PickupDeadline" />
+		<span asp-validation-for="PickupDeadline"></span>
 
 		<!-- meals to add to the meal package -->
 		<table>
@@ -36,14 +40,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var meal in Model.Meals)
+				@foreach (var meal in Model.SystemMeals)
 				{
-					var mealIsSelectedInPackage = Model.MealPackage.Meals.Any(x => x.MealId == meal.Id);
+					var mealIsSelectedInPackage = Model.SelectedMeals.Any(x => x.Id == meal.Id);
 					@await Html.PartialAsync("_MealPackageMeal", new MealPackageMealViewModel(meal, mealIsSelectedInPackage))
 				}
 			</tbody>
 		</table>
 
 		<button>Bewerk</button>
-	</form>
+	</forsm>
 }
