@@ -135,13 +135,15 @@ namespace AvansMealDeal.Infrastructure.Identity.SQLServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "46b83557-511e-457b-8647-256de73f7cdb",
-                            Name = "Student"
+                            Id = "d061e63c-f99b-4344-9b59-6ff33bc56bcf",
+                            Name = "Student",
+                            NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "108bd950-6071-43dd-8d54-6c159a86e36c",
-                            Name = "Employee"
+                            Id = "2734a4d7-3135-41b8-8eff-697990624b53",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
                         });
                 });
 

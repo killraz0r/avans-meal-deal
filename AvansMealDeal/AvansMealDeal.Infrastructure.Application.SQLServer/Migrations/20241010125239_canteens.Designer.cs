@@ -4,6 +4,7 @@ using AvansMealDeal.Infrastructure.Application.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AvansMealDeal.Infrastructure.Application.SQLServer.Migrations
 {
     [DbContext(typeof(DbContextApplicationSqlServer))]
-    partial class DbContextApplicationSqlServerModelSnapshot : ModelSnapshot
+    [Migration("20241010125239_canteens")]
+    partial class Canteens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +161,7 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Migrations
 
                     b.HasIndex("MealPackageId");
 
-                    b.ToTable("MealPackageItems");
+                    b.ToTable("MealPackageItem");
                 });
 
             modelBuilder.Entity("AvansMealDeal.Domain.Models.Reservation", b =>
