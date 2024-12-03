@@ -1,7 +1,18 @@
 @using AvansMealDeal.Domain.Models
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject UserManager<MealDealUser> UserManager
 @model MealPackageDetailsViewModel
+
+<!-- the canteen of the employee needs to be known because an employee can only edit/remove packages in their own canteen -->
+@{
+	var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+	var user = await UserManager.FindByIdAsync(userId ?? string.Empty);
+	var employeeCanteenId = user?.EmployeeCanteenId;
+}
+
 <!-- meal package details form -->
-@using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "EmployeeMealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div asp-validation-summary="All"></div>
 	<br />
@@ -59,16 +70,21 @@
 			</tbody>
 		</table>
 
-		@if (!Model.HasReservation)
+		<!-- only show edit/remove buttons if employee is allowed to -->
+		@if (!Model.HasReservation && Model.MatchesCanteen(employeeCanteenId))
 		{
 			<button>Bewerk</button>
 		}
-		else
+		else if (Model.HasReservation)
 		{
 			<h3>Het maaltijdpakket heeft een reservering en kan dus niet bewerkt of verwijderd worden</h3>
 		}
+		else if (!Model.MatchesCanteen(employeeCanteenId))
+		{
+			<h3>Het maaltijdpakket komt uit een andere kantine en kan dus niet bewerkt of verwijderd worden</h3>
+		}
 	</form>
-	@if (!Model.HasReservation)
+	@if (!Model.HasReservation && Model.MatchesCanteen(employeeCanteenId))
 	{
 		<form asp-action="Remove" method="post">
 			<input type="hidden" asp-for="Id" />

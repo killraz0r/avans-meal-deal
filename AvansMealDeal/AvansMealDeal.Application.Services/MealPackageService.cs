@@ -84,5 +84,10 @@ namespace AvansMealDeal.Application.Services
         {
             return await mealPackageRepository.ReadForCanteen(canteenId);
         }
+
+        public async Task<ICollection<MealPackage>> GetForOtherCanteens(int canteenId)
+        {
+            return await mealPackageRepository.ReadForOtherCanteens(canteenId);
+        }
     }
 }
