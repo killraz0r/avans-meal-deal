@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AvansMealDeal.Infrastructure.Application.SQLServer.Migrations
 {
     /// <inheritdoc />
-    public partial class casus : Migration
+    public partial class Casus : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

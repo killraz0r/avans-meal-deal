@@ -10,7 +10,8 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer
         public DbSet<Canteen> Canteens { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<MealPackage> MealsPackages { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
+		public DbSet<MealPackageItem> MealPackageItems { get; set; }
+		public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,6 +47,52 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer
                 .HasOne(x => x.Reservation)
                 .WithOne(x => x.MealPackage)
                 .HasForeignKey<Reservation>(x => x.MealPackageId);
+
+            // add canteens (enumeration)
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 1,
+                City = City.Breda,
+                Address = "Hogeschoollaan 1",
+                OffersHotMeals = true
+            });
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 2,
+                City = City.Breda,
+                Address = "Lovensdijkstraat 61",
+                OffersHotMeals = false
+            });
+
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 3,
+                City = City.Tilburg,
+                Address = "Professor Cobbenhagenlaan 1",
+                OffersHotMeals = true
+            });
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 4,
+                City = City.Tilburg,
+                Address = "Professor Cobbenhagenlaan 13",
+                OffersHotMeals = false
+            });
+
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 5,
+                City = City.DenBosch,
+                Address = "Onderwijsboulevard 215",
+                OffersHotMeals = true
+            });
+            modelBuilder.Entity<Canteen>().HasData(new Canteen
+            {
+                Id = 6,
+                City = City.DenBosch,
+                Address = "Parallelweg 23",
+                OffersHotMeals = false
+            });
         }
     }
 }

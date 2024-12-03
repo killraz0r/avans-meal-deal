@@ -13,7 +13,7 @@ namespace AvansMealDeal.Infrastructure.Identity.SQLServer.Migrations
 {
     [DbContext(typeof(DbContextIdentitySqlServer))]
     [Migration("20240926165741_casus")]
-    partial class casus
+    partial class Casus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

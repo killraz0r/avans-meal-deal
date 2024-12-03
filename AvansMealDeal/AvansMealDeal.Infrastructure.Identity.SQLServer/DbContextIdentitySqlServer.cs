@@ -13,8 +13,16 @@ namespace AvansMealDeal.Infrastructure.Identity.SQLServer
             base.OnModelCreating(builder);
 
             // add roles
-            builder.Entity<IdentityRole>().HasData(new IdentityRole(Role.Student));
-            builder.Entity<IdentityRole>().HasData(new IdentityRole(Role.Employee));
+            builder.Entity<IdentityRole>().HasData(new IdentityRole
+            { 
+                Name = Role.Student,
+                NormalizedName = Role.Student.ToUpper()
+            });
+            builder.Entity<IdentityRole>().HasData(new IdentityRole
+            {
+                Name = Role.Employee,
+                NormalizedName = Role.Employee.ToUpper()
+            });
         }
     }
 }

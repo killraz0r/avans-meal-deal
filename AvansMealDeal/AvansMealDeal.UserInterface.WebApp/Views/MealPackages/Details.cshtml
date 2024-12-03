@@ -1,0 +1,78 @@
+@using AvansMealDeal.Domain.Models
+@model MealPackageDetailsViewModel
+<!-- meal package details form -->
+@using (Html.BeginForm("Edit", "MealPackages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div asp-validation-summary="All"></div>
+	<br />
+	<form asp-action="Edit" method="post">
+		<!-- needed id values for editing to work -->
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="ReservationId" />
+
+		<!-- name -->
+		<label asp-for="Name">Naam:</label>
+		<input asp-for="Name" />
+		<span asp-validation-for="Name"></span>
+		<br />
+
+		<!-- price -->
+		<label asp-for="Price">Prijs: €</label>
+		<input asp-for="Price" type="number" min="0.01" max="9999.99" step="0.01" />
+		<span asp-validation-for="Price"></span>
+		<br />
+
+		<!-- meal package type -->
+		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
+		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		<span asp-validation-for="MealPackageType"></span>
+		<br />
+
+		<!-- pickup deadline -->
+		@{
+			// deadline input should be between now and 48 hours in the future
+			var now = DateTimeOffset.Now;
+			var minValue = now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm"); // add five minutes for better user experience (otherwise, pickup deadline could be in the past when user submits form)
+			var maxValue = now.AddHours(48).ToString("yyyy-MM-ddTHH:mm");
+		}
+		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
+		<input asp-for="PickupDeadline" min="@minValue" max="@maxValue" value="@Model.PickupDeadline!.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" />
+		<span asp-validation-for="PickupDeadline"></span>
+		<br />
+
+		<!-- meals to add to the meal package -->
+		<table>
+			<thead>
+				<tr>
+					<th>Foto   </th>
+					<th>Naam   </th>
+					<th>Bevat alcohol   </th>
+					<th>Onderdeel van maaltijdpakket?   </th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var meal in Model.SystemMeals)
+				{
+					var mealIsSelectedInPackage = Model.SelectedMeals.Any(x => x.Id == meal.Id);
+					@await Html.PartialAsync("_MealPackageMeal", new MealPackageMealViewModel(meal, mealIsSelectedInPackage))
+				}
+			</tbody>
+		</table>
+
+		@if (!Model.HasReservation)
+		{
+			<button>Bewerk</button>
+		}
+		else
+		{
+			<h3>Het maaltijdpakket heeft een reservering en kan dus niet bewerkt of verwijderd worden</h3>
+		}
+	</form>
+	@if (!Model.HasReservation)
+	{
+		<form asp-action="Remove" method="post">
+			<input type="hidden" asp-for="Id" />
+			<button>Verwijder</button>
+		</form>
+	}
+}
