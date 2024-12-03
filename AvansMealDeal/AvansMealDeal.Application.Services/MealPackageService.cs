@@ -15,7 +15,13 @@ namespace AvansMealDeal.Application.Services
 
 		public async Task Add(MealPackage mealPackage, ICollection<int> mealIds)
 		{
-			await mealPackageRepository.Create(mealPackage);
+            // prevent invalid deadline (in the past and more than 48 hours in the future)
+            if (DateTimeOffset.Now > mealPackage.PickupDeadline || mealPackage.PickupDeadline > DateTimeOffset.Now.AddHours(48))
+            {
+                throw new InvalidOperationException("The pickup deadline is invalid");
+            }
+
+            await mealPackageRepository.Create(mealPackage);
             foreach (var mealId in mealIds) 
             {
                 await mealPackageRepository.AddMealToPackage(mealPackage.Id, mealId);
@@ -24,10 +30,24 @@ namespace AvansMealDeal.Application.Services
 
 		public async Task Edit(MealPackage mealPackage, ICollection<int> mealIds)
 		{
-            var mealPackageInDatabase = await GetById(mealPackage.Id);
+            // prevent invalid deadline (in the past and more than 48 hours in the future)
+            if (DateTimeOffset.Now > mealPackage.PickupDeadline || mealPackage.PickupDeadline > DateTimeOffset.Now.AddHours(48))
+            {
+                throw new InvalidOperationException("The pickup deadline is invalid");
+            }
 
-            // null suppressed because meal package exists in the database
-            mealPackageInDatabase!.Name = mealPackage.Name;
+            var mealPackageInDatabase = await GetById(mealPackage.Id);
+            if (mealPackageInDatabase == null) 
+            {
+                throw new InvalidOperationException($"Meal package {mealPackage.Id} not found");
+            }
+            if (mealPackageInDatabase.ReservationId != null || mealPackageInDatabase.Reservation != null)
+            {
+                throw new InvalidOperationException($"Meal package {mealPackage.Id} already has a reservation");
+            }
+
+            // only edit data that is allowed to be edited
+            mealPackageInDatabase.Name = mealPackage.Name;
             mealPackageInDatabase.Price = mealPackage.Price;
             mealPackageInDatabase.MealPackageType = mealPackage.MealPackageType;
             mealPackageInDatabase.PickupDeadline = mealPackage.PickupDeadline;
@@ -44,8 +64,15 @@ namespace AvansMealDeal.Application.Services
         public async Task Remove(int id)
         {
 			var mealPackage = await GetById(id);
-			// null suppressed because meal package exists in the database
-			await mealPackageRepository.Delete(mealPackage!);
+            if (mealPackage == null)
+            {
+                throw new InvalidOperationException($"Meal package {id} not found");
+            }
+            if (mealPackage.ReservationId != null || mealPackage.Reservation != null)
+            {
+                throw new InvalidOperationException($"Meal package {mealPackage.Id} already has a reservation");
+            }
+            await mealPackageRepository.Delete(mealPackage!);
 		}
 
 		public async Task<MealPackage?> GetById(int id)
