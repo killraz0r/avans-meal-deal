@@ -7,13 +7,13 @@ using System.Security.Claims;
 
 namespace AvansMealDeal.UserInterface.WebApp.Controllers
 {
-    public class MealPackagesController : Controller
+    public class EmployeeMealPackagesController : Controller
     {
         private readonly UserManager<MealDealUser> userManager;
         private readonly IMealPackageService mealPackageService;
         private readonly IMealService mealService;
 
-        public MealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService, IMealService mealService)
+        public EmployeeMealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService, IMealService mealService)
         {
             this.userManager = userManager;
             this.mealPackageService = mealPackageService;
@@ -40,6 +40,26 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             return View("Index", mealPackages);
         }
 
+        public async Task<IActionResult> OtherCanteens()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // stop if user is not logged in
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            // stop if user is not an employee
+            if (user == null || !await userManager.IsInRoleAsync(user, Role.Employee))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var mealPackages = await mealPackageService.GetForOtherCanteens((int)user.EmployeeCanteenId!); // employee canteen id is not null if user is employee
+            return View("OtherCanteens", mealPackages);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var mealPackage = await mealPackageService.GetById(id);
@@ -58,6 +78,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
                 MealPackageType = mealPackage.MealPackageType,
                 PickupDeadline = mealPackage.PickupDeadline,
                 ReservationId = mealPackage.ReservationId,
+                CanteenId = mealPackage.CanteenId,
             });
         }
 
@@ -76,7 +97,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             await mealPackageService.Remove(id);
-            return await Index();
+            return RedirectToAction("Index");
 		}
 
 		[HttpGet]
@@ -100,7 +121,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             var canteenId = (int)user!.EmployeeCanteenId!; // canteen id cannot be null here
 			
             await mealPackageService.Add(mealPackage.GetModel(canteenId), mealIds);
-			return await Index();
-		}
+            return RedirectToAction("Index");
+        }
     }
 }

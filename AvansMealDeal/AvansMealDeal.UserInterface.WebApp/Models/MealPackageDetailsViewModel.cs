@@ -39,8 +39,11 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		public int? ReservationId { get; set; }
 		public bool HasReservation => ReservationId != null;
 
-		// convert view model to model
-		public MealPackage GetModel()
+        public required int CanteenId { get; set; }
+		public bool MatchesCanteen(int? userCanteenId) => CanteenId == userCanteenId;
+
+        // convert view model to model
+        public MealPackage GetModel()
 		{
 			return new MealPackage
 			{

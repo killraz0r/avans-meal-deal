@@ -59,17 +59,6 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-		public async Task<ICollection<MealPackage>> ReadForCity(City city)
-        {
-            return await dbContext.MealsPackages
-                .Include(x => x.Canteen)
-                .Include(x => x.Reservation)
-                .Include(x => x.Meals).ThenInclude(x => x.Meal)
-                .Where(x => x.Canteen.City == city && x.PickupDeadline >= DateTimeOffset.Now)
-                .OrderBy(x => x.PickupDeadline)
-                .ToListAsync();
-        }
-
         public async Task<ICollection<MealPackage>> ReadForCanteen(int canteenId)
         {
             return await dbContext.MealsPackages
@@ -77,6 +66,17 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .Include(x => x.Reservation)
 				.Include(x => x.Meals).ThenInclude(x => x.Meal)
 				.Where(x => x.Canteen.Id == canteenId && x.PickupDeadline >= DateTimeOffset.Now)
+                .OrderBy(x => x.PickupDeadline)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<MealPackage>> ReadForOtherCanteens(int canteenId)
+        {
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Include(x => x.Meals).ThenInclude(x => x.Meal)
+                .Where(x => x.Canteen.Id != canteenId && x.PickupDeadline >= DateTimeOffset.Now)
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
