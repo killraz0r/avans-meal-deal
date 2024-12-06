@@ -2,7 +2,7 @@
 
 namespace AvansMealDeal.UserInterface.WebApp.Models
 {
-	public class MealPackageMealViewModel
+	public class EmployeeMealPackageMealViewModel
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -10,7 +10,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		public byte[]? Photo { get; set; }
 		public bool Selected { get; set; } = false;
 
-		public MealPackageMealViewModel(Meal meal, bool selected)
+		public EmployeeMealPackageMealViewModel(Meal meal, bool selected)
 		{
 			Id = meal.Id;
 			Name = meal.Name;

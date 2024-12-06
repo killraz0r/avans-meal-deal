@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @inject UserManager<MealDealUser> UserManager
-@model MealPackageDetailsViewModel
+@model EmployeeMealPackageDetailsViewModel
 
 <!-- the canteen of the employee needs to be known because an employee can only edit/remove packages in their own canteen -->
 @{
@@ -65,7 +65,7 @@
 				@foreach (var meal in Model.SystemMeals)
 				{
 					var mealIsSelectedInPackage = Model.SelectedMeals.Any(x => x.Id == meal.Id);
-					@await Html.PartialAsync("_MealPackageMeal", new MealPackageMealViewModel(meal, mealIsSelectedInPackage))
+					@await Html.PartialAsync("_EmployeeMealPackageMeal", new EmployeeMealPackageMealViewModel(meal, mealIsSelectedInPackage))
 				}
 			</tbody>
 		</table>

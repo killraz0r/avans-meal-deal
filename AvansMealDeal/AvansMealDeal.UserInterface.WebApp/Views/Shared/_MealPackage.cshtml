@@ -4,6 +4,9 @@
 
 <div>
     <h3>Naam: @Model.Name</h3>
+    @if (Model.Reservation != null) {
+        <h5>Ophaaltijdstip: @Model.Reservation.PlannedPickup.DateTime <!--do not show timezone by discarding offset--></h5>
+    }
     <h6>Prijs: €@Model.Price</h6>
     <h6>Type: @HtmlHelpers.DisplayMealPackageType(Model.MealPackageType)</h6>
     <h6>Deadline: @Model.PickupDeadline.DateTime <!--do not show timezone by discarding offset--></h6>

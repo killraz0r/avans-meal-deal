@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AvansMealDeal.UserInterface.WebApp.Models
 {
-    public class MealPackageDetailsViewModel
+    public class EmployeeMealPackageDetailsViewModel
     {
 		// all meals in the system
 		public ICollection<Meal> SystemMeals { get; set; } = new List<Meal>(); // fallback to prevent null reference error

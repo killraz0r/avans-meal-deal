@@ -68,7 +68,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
                 return NotFound();
             }
 			var systemMeals = await mealService.GetAll();
-			return View("Details", new MealPackageDetailsViewModel 
+			return View("Details", new EmployeeMealPackageDetailsViewModel 
             {
                 SystemMeals = systemMeals,
                 SelectedMeals = mealPackage.Meals.Select(x => x.Meal).ToList(),
@@ -83,7 +83,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(MealPackageDetailsViewModel mealPackageDetails, List<int> mealIds)
+        public async Task<IActionResult> Edit(EmployeeMealPackageDetailsViewModel mealPackageDetails, List<int> mealIds)
         {
 			if (ModelState.IsValid)
 			{
