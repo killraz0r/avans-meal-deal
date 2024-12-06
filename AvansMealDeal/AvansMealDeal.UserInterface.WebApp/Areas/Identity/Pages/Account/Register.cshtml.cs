@@ -78,7 +78,7 @@ namespace AvansMealDeal.UserInterface.WebApp.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public class InputModel
+        public class InputModel : IValidatableObject
         {
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -113,25 +113,89 @@ namespace AvansMealDeal.UserInterface.WebApp.Areas.Identity.Pages.Account
             [Display(Name = "Naam")]
             public string Name { get; set; }
 
-            [Required(ErrorMessage = "Personeelsnummer ontbreekt")]
+            [Required(ErrorMessage = "Rol ontbreekt")]
+            [Display(Name = "Rol")]
+            public string Role { get; set; }
+
+            // employee fields
             [DataType(DataType.Text)]
             [Display(Name = "Personeelsnummer")]
             public string EmployeeNumber { get; set; }
 
-            [Required(ErrorMessage = "Kantine ontbreekt")]
             [DataType(DataType.Text)]
             [Display(Name = "Kantine")]
-            public int EmployeeCanteenId { get; set; }
+            public int? EmployeeCanteenId { get; set; }
+
+            // student fields
+            [DataType(DataType.Text)]
+            [Display(Name = "Studentnummer")]
+            public string StudentNumber { get; set; }
+
+            [DataType(DataType.Date)]
+            [Display(Name = "Geboortedatum")]
+            public DateOnly? StudentBirthDate { get; set; }
+
+            [Display(Name = "Studiestad")]
+            public City? StudentCity { get; set; }
+
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Telefoonnummer")]
+            public string PhoneNumber { get; set; }
+
+            // validation for specific roles
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                if (Role == Domain.Models.Role.Employee)
+                {
+                    if (string.IsNullOrWhiteSpace(EmployeeNumber))
+                    {
+                        yield return new ValidationResult("Personeelnummer ontbreekt", [nameof(EmployeeNumber)]);
+                    }
+                    if (!EmployeeCanteenId.HasValue)
+                    {
+                        yield return new ValidationResult("Kantine ontbreekt", [nameof(EmployeeCanteenId)]);
+                    }
+                }
+
+                if (Role == Domain.Models.Role.Student)
+                {
+                    if (string.IsNullOrWhiteSpace(StudentNumber)) 
+                    {
+                        yield return new ValidationResult("Studentnummer ontbreekt", [nameof(StudentNumber)]);
+                    }
+
+                    if (!StudentBirthDate.HasValue)
+                    {
+                        yield return new ValidationResult("Geboortedatum ontbreekt", [nameof(StudentBirthDate)]);
+                    }
+                    else
+                    {
+                        // prevent people under 16 from registration
+                        var today = DateOnly.FromDateTime(DateTimeOffset.Now.Date);
+                        var sixteenYearsAgo = today.AddYears(-16);
+
+                        if (StudentBirthDate > sixteenYearsAgo)
+                        {
+                            yield return new ValidationResult("Je moet minimaal 16 jaar zijn om te registreren", [nameof(StudentBirthDate)]);
+                        }
+                    }
+
+                    if (!StudentCity.HasValue)
+                    {
+                        yield return new ValidationResult("Studiestad ontbreekt", [nameof(StudentCity)]);
+                    }   
+
+                    if (string.IsNullOrWhiteSpace(PhoneNumber))
+                    {
+                        yield return new ValidationResult("Telefoonnummer ontbreekt", [nameof(PhoneNumber)]);
+                    }
+                }
+            }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            var canteens = await canteenService.GetAll();
-            Canteens = canteens.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = $"{c.Address}, {c.City}" // show address with city
-            }).ToList();
+            await LoadCanteens();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -144,9 +208,19 @@ namespace AvansMealDeal.UserInterface.WebApp.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.Name = Input.Name;
-                user.EmployeeNumber = Input.EmployeeNumber;
-                user.EmployeeCanteenId = Input.EmployeeCanteenId;
-                await _userManager.AddToRoleAsync(user, Role.Employee);
+                if (Input.Role == Role.Employee) 
+                {
+                    user.EmployeeNumber = Input.EmployeeNumber;
+                    user.EmployeeCanteenId = Input.EmployeeCanteenId;
+                }
+                if (Input.Role == Role.Student) 
+                {
+                    user.StudentNumber = Input.StudentNumber;
+                    user.StudentBirthDate = Input.StudentBirthDate;
+                    user.StudentCity = Input.StudentCity;
+                    await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                }
+                await _userManager.AddToRoleAsync(user, Input.Role);
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -183,8 +257,19 @@ namespace AvansMealDeal.UserInterface.WebApp.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // canteens need to be reloaded if the form needs to be resubmitted
+            await LoadCanteens();
             return Page();
+        }
+
+        private async Task LoadCanteens()
+        {
+            var canteens = await canteenService.GetAll();
+            Canteens = canteens.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.ToString()
+            }).ToList();
         }
 
         private MealDealUser CreateUser()

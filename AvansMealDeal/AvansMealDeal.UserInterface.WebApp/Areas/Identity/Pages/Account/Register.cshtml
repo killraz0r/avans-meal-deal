@@ -1,4 +1,5 @@
 ﻿@page
+@using AvansMealDeal.Domain.Models
 @model RegisterModel
 
 <h1>Registreren</h1>
@@ -6,7 +7,6 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -29,19 +29,61 @@
                 <label asp-for="Input.Name">Naam</label>
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.EmployeeNumber" class="form-control" aria-required="true" placeholder="naam" />
-                <label asp-for="Input.EmployeeNumber">Personeelsnummer</label>
-                <span asp-validation-for="Input.EmployeeNumber" class="text-danger"></span>
-            </div>
             <div class="form-group">
-                <label asp-for="Input.EmployeeCanteenId" class="control-label">Kantine</label>
-                <select asp-for="Input.EmployeeCanteenId" class="form-control" asp-items="Model.Canteens">
-                    <option value="">Selecteer een kantine</option>
-                </select>
-                <span asp-validation-for="Input.EmployeeCanteenId" class="text-danger"></span>
+                <label>Ik ben een:</label>
+                <div>
+                    @Html.RadioButtonFor(model => model.Input.Role, Role.Employee, new { id = "roleEmployee" })
+                    <label for="roleEmployee">Medewerker</label>
+                </div>
+                <div>
+                    @Html.RadioButtonFor(model => model.Input.Role, Role.Student, new { id = "roleStudent" })
+                    <label for="roleStudent">Student</label>
+                </div>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registreer</button>
+
+            <!-- employee inputs -->
+            <div id="employeeInputs" style="display:none;">
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.EmployeeNumber" class="form-control" aria-required="true" placeholder="personeelsnummer" />
+                    <label asp-for="Input.EmployeeNumber">Personeelsnummer</label>
+                    <span asp-validation-for="Input.EmployeeNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.EmployeeCanteenId" class="control-label">Kantine</label>
+                    <select asp-for="Input.EmployeeCanteenId" class="form-control" asp-items="Model.Canteens">
+                        <option value="">Selecteer een kantine</option>
+                    </select>
+                    <span asp-validation-for="Input.EmployeeCanteenId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- student inputs -->
+            <div id="studentInputs" style="display:none;">
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.StudentNumber" class="form-control" placeholder="studentnummer" />
+                    <label asp-for="Input.StudentNumber">Studentnummer</label>
+                    <span asp-validation-for="Input.StudentNumber" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.StudentBirthDate" type="date" class="form-control" id="studentBirthDate" />
+                    <label for="studentBirthDate">Geboortedatum</label>
+                    <span asp-validation-for="Input.StudentBirthDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.StudentCity">Studiestad:</label>
+                    <select asp-for="Input.StudentCity" asp-items="Html.GetEnumSelectList<City>()"></select>
+                    <span asp-validation-for="Input.StudentCity"></span>
+                    <br />
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="telefoonnummer" />
+                    <label asp-for="Input.PhoneNumber">Telefoonnummer</label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <br />
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary" style="display:none;">Registreer</button>
         </form>
     </div>
 </div>
@@ -49,3 +91,26 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+    // only show inputs for the selected role
+    const showInputsForSelectedRole = () => {
+        if ($('#roleEmployee').is(':checked')) {
+            $('#employeeInputs').show();
+            $('#studentInputs').hide();
+            $('#registerSubmit').show(); // only show button when a role is selected
+        }
+        if ($('#roleStudent').is(':checked')){
+            $('#employeeInputs').hide();
+            $('#studentInputs').show();
+            $('#registerSubmit').show(); // only show button when a role is selected
+        }
+    }
+    $(document).ready(() => {
+        // bind to role radio buttons
+        $('input[name="Input.Role"]').change(() => {
+            showInputsForSelectedRole();
+        });
+        showInputsForSelectedRole(); // call when page loads, in case a role was already selected (when form data needs to be corrected)
+    });
+</script>
