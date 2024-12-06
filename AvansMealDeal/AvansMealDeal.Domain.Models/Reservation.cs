@@ -5,7 +5,7 @@
     {
         public int Id { get; set; }
 
-        public required int StudentId { get; set; }
+        public required string StudentId { get; set; }
         public required DateTimeOffset PlannedPickup { get; set; }
 
         // meal package data

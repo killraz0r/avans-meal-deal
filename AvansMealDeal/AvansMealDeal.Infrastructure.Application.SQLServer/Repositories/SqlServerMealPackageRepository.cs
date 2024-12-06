@@ -80,5 +80,27 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
+
+        public async Task<ICollection<MealPackage>> ReadWithoutReservation()
+        {
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Include(x => x.Meals).ThenInclude(x => x.Meal)
+                .Where(x => x.Reservation == null && x.PickupDeadline >= DateTimeOffset.Now)
+                .OrderBy(x => x.PickupDeadline)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<MealPackage>> ReadWithReservationForStudent(string studentId)
+        {
+            return await dbContext.MealsPackages
+                .Include(x => x.Canteen)
+                .Include(x => x.Reservation)
+                .Include(x => x.Meals).ThenInclude(x => x.Meal)
+                .Where(x => x.Reservation != null && x.Reservation.StudentId == studentId)
+                .OrderBy(x => x.PickupDeadline)
+                .ToListAsync();
+        }
     }
 }

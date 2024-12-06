@@ -7,6 +7,6 @@
     <h6>Prijs: €@Model.Price</h6>
     <h6>Type: @HtmlHelpers.DisplayMealPackageType(Model.MealPackageType)</h6>
     <h6>Deadline: @Model.PickupDeadline.DateTime <!--do not show timezone by discarding offset--></h6>
-    <h6>Adres kantine: @Model.Canteen.Address</h6>
+    <h6>Adres kantine: @Model.Canteen.Address, @HtmlHelpers.DisplayCity(Model.Canteen.City)</h6>
     <h6>Alleen voor volwassenen: @HtmlHelpers.DisplayDutchBoolean(Model.AdultsOnly())</h6>
 </div>

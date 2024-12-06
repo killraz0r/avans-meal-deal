@@ -89,5 +89,15 @@ namespace AvansMealDeal.Application.Services
         {
             return await mealPackageRepository.ReadForOtherCanteens(canteenId);
         }
+
+        public async Task<ICollection<MealPackage>> GetWithoutReservation()
+        {
+            return await mealPackageRepository.ReadWithoutReservation();
+        }
+
+        public async Task<ICollection<MealPackage>> GetWithReservationForStudent(string studentId)
+        {
+            return await mealPackageRepository.ReadWithReservationForStudent(studentId);
+        }
     }
 }
