@@ -56,5 +56,15 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             var mealPackages = await mealPackageService.GetWithReservationForStudent(user.Id);
             return View("MyReservations", mealPackages);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var mealPackage = await mealPackageService.GetById(id);
+            if (mealPackage == null)
+            {
+                return NotFound();
+            }
+            return View("Details", mealPackage);
+        }
     }
 }

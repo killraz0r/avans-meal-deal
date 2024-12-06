@@ -4,7 +4,7 @@
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
-    <h5>Ophaaltijdstip: @mealPackage.Reservation!.PlannedPickup.DateTime <!--do not show timezone by discarding offset--></h5>
+    <a asp-area="" asp-controller="StudentMealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
     <br />
 }
 <br />

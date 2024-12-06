@@ -1,0 +1,24 @@
+﻿@using AvansMealDeal.Domain.Models
+@model MealPackage
+
+@await Html.PartialAsync("_MealPackage", Model)
+<br />
+<!-- meals inside the meal package -->
+<h3>Producten (voorbeeld):</h3>
+<table>
+	<thead>
+		<tr>
+			<th>Foto   </th>
+			<th>Naam   </th>
+			<th>Bevat alcohol   </th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var meal in Model.Meals.Select(x => x.Meal))
+		{
+			@await Html.PartialAsync("_StudentMealPackageMeal", meal)
+		}
+	</tbody>
+</table>
+<br />
+<h6>De bovenstaande maaltijden zijn een voorbeeld van de inhoud van het maaltijdpakket, de daadwerkelijke inhoud kan afwijken.</h6>

@@ -47,9 +47,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var meal in Model.Meals.Select(x => new MealPackageMealViewModel(x, selected: false)))
+				@foreach (var meal in Model.Meals.Select(x => new EmployeeMealPackageMealViewModel(x, selected: false)))
 				{
-					@await Html.PartialAsync("_MealPackageMeal", meal)
+					@await Html.PartialAsync("_EmployeeMealPackageMeal", meal)
 				}
 			</tbody>
 		</table>
