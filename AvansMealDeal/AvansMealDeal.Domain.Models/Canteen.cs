@@ -10,5 +10,17 @@
 
         // meal package data
         public ICollection<MealPackage> MealPackages { get; set; } = [];
+
+        // displays info about the canteen
+        public override string ToString()
+        {
+            var fullAddress = $"{Address}, {City}";
+
+            if (OffersHotMeals)
+            {
+                return fullAddress + " (warme avondmaaltijden)"; 
+            }
+            return fullAddress + " (GEEN warme avondmaaltijden)";
+        }
     }
 }

@@ -15,7 +15,18 @@ namespace AvansMealDeal.UserInterface.WebApp.Helpers
 			}
 		}
 
-		public static string DisplayDutchBoolean(bool boolean)
+        public static string DisplayCity(City city)
+        {
+            switch (city)
+            {
+                case City.Breda: return "Breda";
+                case City.Tilburg: return "Tilburg";
+                case City.DenBosch: return "Den Bosch";
+                default: return "?";
+            }
+        }
+
+        public static string DisplayDutchBoolean(bool boolean)
 		{
 			if (boolean)
 			{

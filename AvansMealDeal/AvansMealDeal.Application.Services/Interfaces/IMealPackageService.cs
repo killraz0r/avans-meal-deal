@@ -10,5 +10,7 @@ namespace AvansMealDeal.Application.Services.Interfaces
         Task<MealPackage?> GetById(int id);
         Task<ICollection<MealPackage>> GetForCanteen(int canteenId);
         Task<ICollection<MealPackage>> GetForOtherCanteens(int canteenId);
+        Task<ICollection<MealPackage>> GetWithoutReservation();
+        Task<ICollection<MealPackage>> GetWithReservationForStudent(string studentId);
     }
 }

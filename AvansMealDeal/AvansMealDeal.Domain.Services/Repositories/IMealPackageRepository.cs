@@ -13,5 +13,7 @@ namespace AvansMealDeal.Domain.Services.Repositories
 		Task<MealPackage?> ReadById(int id);
         Task<ICollection<MealPackage>> ReadForCanteen(int canteenId);
         Task<ICollection<MealPackage>> ReadForOtherCanteens(int canteenId);
+        Task<ICollection<MealPackage>> ReadWithoutReservation();
+        Task<ICollection<MealPackage>> ReadWithReservationForStudent(string studentId);
     }
 }
