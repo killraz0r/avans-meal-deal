@@ -19,8 +19,17 @@
 		<br />
 
 		<!-- meal package type -->
-		<label asp-for="MealPackageType">Type maaltijdpakket:</label>
-		<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		@if (Model.CanteenOffersHotMeals) 
+		{
+			<label asp-for="MealPackageType">Type maaltijdpakket:</label>
+			<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>()"></select>
+		}
+		else 
+		{
+			<label asp-for="MealPackageType">Type maaltijdpakket (deze kantine biedt geen warme maaltijden aan):</label>
+			<!-- canteen offers no hot meals, so remove HotMeal from the dropdown (the value inside the dropdown is a string version of the enum int value) -->
+			<select asp-for="MealPackageType" asp-items="Html.GetEnumSelectList<MealPackageType>().Where(x => x.Value != ((int)MealPackageType.HotMeal).ToString())"></select>
+		}
 		<span asp-validation-for="MealPackageType"></span>
 		<br />
 

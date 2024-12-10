@@ -7,20 +7,17 @@ namespace AvansMealDeal.Application.Services
     public class MealPackageService : IMealPackageService
     {
         private readonly IMealPackageRepository mealPackageRepository;
+        private readonly ICanteenRepository canteenRepository;
 
-        public MealPackageService(IMealPackageRepository mealPackageRepository)
+        public MealPackageService(IMealPackageRepository mealPackageRepository, ICanteenRepository canteenRepository)
         {
             this.mealPackageRepository = mealPackageRepository;
+            this.canteenRepository = canteenRepository;
         }
 
 		public async Task Add(MealPackage mealPackage, ICollection<int> mealIds)
 		{
-            // prevent invalid deadline (in the past and more than 48 hours in the future)
-            if (DateTimeOffset.Now > mealPackage.PickupDeadline || mealPackage.PickupDeadline > DateTimeOffset.Now.AddHours(48))
-            {
-                throw new InvalidOperationException("The pickup deadline is invalid");
-            }
-
+            await ThrowWhenMealPackageIsInvalid(mealPackage);
             await mealPackageRepository.Create(mealPackage);
             foreach (var mealId in mealIds) 
             {
@@ -30,12 +27,9 @@ namespace AvansMealDeal.Application.Services
 
 		public async Task Edit(MealPackage mealPackage, ICollection<int> mealIds)
 		{
-            // prevent invalid deadline (in the past and more than 48 hours in the future)
-            if (DateTimeOffset.Now > mealPackage.PickupDeadline || mealPackage.PickupDeadline > DateTimeOffset.Now.AddHours(48))
-            {
-                throw new InvalidOperationException("The pickup deadline is invalid");
-            }
+            await ThrowWhenMealPackageIsInvalid(mealPackage);
 
+            // meal packages with reservations can't be edited
             var mealPackageInDatabase = await GetById(mealPackage.Id);
             if (mealPackageInDatabase == null) 
             {
@@ -61,9 +55,29 @@ namespace AvansMealDeal.Application.Services
 			}
 		}
 
+        private async Task ThrowWhenMealPackageIsInvalid(MealPackage mealPackage)
+        {
+            // prevent invalid deadline (in the past and more than 48 hours in the future)
+            if (DateTimeOffset.Now > mealPackage.PickupDeadline || mealPackage.PickupDeadline > DateTimeOffset.Now.AddHours(48))
+            {
+                throw new InvalidOperationException("The pickup deadline is invalid");
+            }
+
+            // if the meal package is a hot meal, the canteen must support offering hot meals
+            if (mealPackage.MealPackageType == MealPackageType.HotMeal)
+            {
+                var canteen = await canteenRepository.ReadById(mealPackage.CanteenId);
+                if (!canteen.OffersHotMeals)
+                {
+                    throw new InvalidOperationException($"Canteen {mealPackage.CanteenId} does not offer hot meals");
+                }
+            }
+        }
+
         public async Task Remove(int id)
         {
-			var mealPackage = await GetById(id);
+            // meal packages with reservations can't be removed
+            var mealPackage = await GetById(id);
             if (mealPackage == null)
             {
                 throw new InvalidOperationException($"Meal package {id} not found");

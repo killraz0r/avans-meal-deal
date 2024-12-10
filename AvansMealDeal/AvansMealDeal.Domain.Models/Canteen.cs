@@ -6,7 +6,7 @@
         public int Id { get; set; }
         public required City City { get; set; }
         public required string Address { get; set; }
-        public required bool OffersHotMeals { get; set; } // required to serve any HotMeal meals
+        public required bool OffersHotMeals { get; set; } // required to serve any HotMeal meal packages
 
         // meal package data
         public ICollection<MealPackage> MealPackages { get; set; } = [];

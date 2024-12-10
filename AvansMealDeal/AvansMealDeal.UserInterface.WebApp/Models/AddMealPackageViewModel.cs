@@ -9,6 +9,9 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		// all meals in the system
 		public ICollection<Meal> Meals { get; set; } = new List<Meal>(); // fallback to prevent null reference error
 
+		// meal package can only be a hot meal if canteen offers hot meals
+		public bool CanteenOffersHotMeals { get; set; }
+
 		[Required(ErrorMessage = "Naam van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.Text)]
 		[Display(Name = "Naam")]

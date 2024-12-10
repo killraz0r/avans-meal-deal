@@ -12,7 +12,10 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		// meals that are part of the meal package
 		public ICollection<Meal> SelectedMeals { get; set; } = new List<Meal>(); // fallback to prevent null reference error
 
-		public required int Id { get; set; }
+        // meal package can only be a hot meal if canteen offers hot meals
+        public bool CanteenOffersHotMeals { get; set; }
+
+        public required int Id { get; set; }
 
 		[Required(ErrorMessage = "Naam van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.Text)]
@@ -52,6 +55,8 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 				Price = (decimal)Price!, // cannot be null if valid
 				MealPackageType = MealPackageType,
 				PickupDeadline = (DateTimeOffset)PickupDeadline!, // cannot be null if valid
+				CanteenId = CanteenId,
+				ReservationId = ReservationId
 			};
 		}
 	}
