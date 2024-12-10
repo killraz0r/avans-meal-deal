@@ -13,8 +13,18 @@ namespace AvansMealDeal.Tests
 
         public US_03()
         {
+            var canteenRepositoryMock = new Mock<ICanteenRepository>();
             mealPackageRepositoryMock = new Mock<IMealPackageRepository>();
-            mealPackageService = new MealPackageService(mealPackageRepositoryMock.Object);
+            mealPackageService = new MealPackageService(mealPackageRepositoryMock.Object, canteenRepositoryMock.Object);
+
+            // mock canteen repository so that it always returns a valid canteen
+            canteenRepositoryMock.Setup(x => x.ReadById(It.IsAny<int>())).ReturnsAsync((int canteenId) => new Canteen
+            {
+                Id = canteenId,
+                City = City.Breda,
+                Address = "Lovensdijkstraat 61",
+                OffersHotMeals = true
+            });
         }
 
         [Fact]

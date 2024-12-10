@@ -23,8 +23,9 @@ namespace AvansMealDeal.Tests
 
         public US_01()
         {
+            var canteenRepositoryMock = new Mock<ICanteenRepository>();
             mealPackageRepositoryMock = new Mock<IMealPackageRepository>();
-            mealPackageService = new MealPackageService(mealPackageRepositoryMock.Object);
+            mealPackageService = new MealPackageService(mealPackageRepositoryMock.Object, canteenRepositoryMock.Object);
 
             // setup repository mocks using logic from the actual repository 
             mealPackageRepositoryMock.Setup(x => x.ReadWithoutReservation())
