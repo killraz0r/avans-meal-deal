@@ -14,7 +14,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var meal in Model.MealPackage.Meals.Select(x => x.Meal))
+		@foreach (var meal in Model.MealPackage!.Meals.Select(x => x.Meal))
 		{
 			@await Html.PartialAsync("_StudentMealPackageMeal", meal)
 		}
@@ -42,4 +42,8 @@
 		<br />
 		<span asp-validation-for="PlannedPickup"></span>
 	</form>
+}
+else 
+{
+	<h4>Dit maaltijdpakket is al gereserveerd.</h4>
 }
