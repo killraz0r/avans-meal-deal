@@ -88,6 +88,20 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
                 return await Details(model.Id);
             }
 
+            // check if student is an adult if a reservation is being made for an 18+ meal package
+            var mealPackage = await mealPackageService.GetById(model.Id);
+            if (mealPackage!.AdultsOnly())
+            {
+                var user = await userManager.FindByIdAsync(userId);
+                var eighteenYearsAgoFromReservation = plannedReservationDate.AddYears(-18);
+
+                if (user!.StudentBirthDate > eighteenYearsAgoFromReservation)
+                {
+                    ModelState.AddModelError("PlannedPickup", $"Je bent op {plannedReservationDate} nog niet volwassen, dus mag dit maaltijdpakket niet gereserveerd worden.");
+                    return await Details(model.Id);
+                }
+            }
+
             await reservationService.Add(new Reservation
             { 
                 StudentId = userId,
