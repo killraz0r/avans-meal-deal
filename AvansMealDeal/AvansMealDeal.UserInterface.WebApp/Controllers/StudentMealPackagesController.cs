@@ -1,5 +1,6 @@
 ﻿using AvansMealDeal.Application.Services.Interfaces;
 using AvansMealDeal.Domain.Models;
+using AvansMealDeal.UserInterface.WebApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,11 +11,13 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
     {
         private readonly UserManager<MealDealUser> userManager;
         private readonly IMealPackageService mealPackageService;
+        private readonly IReservationService reservationService;
 
-        public StudentMealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService)
+        public StudentMealPackagesController(UserManager<MealDealUser> userManager, IMealPackageService mealPackageService, IReservationService reservationService)
         {
             this.userManager = userManager;
             this.mealPackageService = mealPackageService;
+            this.reservationService = reservationService;
         }
 
         public async Task<IActionResult> Index()
@@ -64,7 +67,34 @@ namespace AvansMealDeal.UserInterface.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View("Details", mealPackage);
+            return View("Details", new StudentMealPackageDetailsViewModel { MealPackage = mealPackage } );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reserve(StudentMealPackageDetailsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return await Details(model.Id);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            // check if student has made a reservation for the given date, prevent the reservation if true
+            var plannedReservationDate = DateOnly.FromDateTime(model.PlannedPickup.Date);
+            var studentHasMadeReservationForGivenDate = await reservationService.HasStudentMadeReservationForGivenDate(userId, plannedReservationDate);
+            if (studentHasMadeReservationForGivenDate)
+            {
+                ModelState.AddModelError("PlannedPickup", $"Er is voor de gekozen dag {plannedReservationDate} al een reservering. Er is slechts een reservering per afhaaldag toegestaan.");
+                return await Details(model.Id);
+            }
+
+            await reservationService.Add(new Reservation
+            { 
+                StudentId = userId,
+                MealPackageId = model.Id,
+                PlannedPickup = model.PlannedPickup
+            });
+            return RedirectToAction("MyReservations");
         }
     }
 }

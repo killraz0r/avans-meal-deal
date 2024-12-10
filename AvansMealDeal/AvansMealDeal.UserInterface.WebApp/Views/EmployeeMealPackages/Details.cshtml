@@ -46,7 +46,7 @@
 			var minValue = now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm"); // add five minutes for better user experience (otherwise, pickup deadline could be in the past when user submits form)
 			var maxValue = now.AddHours(48).ToString("yyyy-MM-ddTHH:mm");
 		}
-		<label asp-for="PickupDeadline">Ophaaltijdstip:</label>
+		<label asp-for="PickupDeadline">Deadline:</label>
 		<input asp-for="PickupDeadline" min="@minValue" max="@maxValue" value="@Model.PickupDeadline!.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" />
 		<span asp-validation-for="PickupDeadline"></span>
 		<br />
