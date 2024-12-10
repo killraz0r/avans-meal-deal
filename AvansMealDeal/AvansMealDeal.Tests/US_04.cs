@@ -4,6 +4,7 @@ namespace AvansMealDeal.Tests
 {
     public class US_04
     {
+        [Fact]
         public void AdultsOnly_MealPackageWithItemThatContainAlcohol_ReturnsTrue()
         {
             // arrange
@@ -27,6 +28,7 @@ namespace AvansMealDeal.Tests
             Assert.True(result);
         }
 
+        [Fact]
         public void AdultsOnly_MealPackageWithoutItemThatContainAlcohol_ReturnsFalse()
         {
             // arrange
@@ -50,6 +52,7 @@ namespace AvansMealDeal.Tests
             Assert.False(result);
         }
 
+        [Fact]
         public void AdultsOnly_MealPackageWithoutItems_ReturnsFalse()
         {
             // arrange
