@@ -14,11 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<ICanteenRepository, SqlServerCanteenRepository>();
 builder.Services.AddTransient<IMealRepository, SqlServerMealRepository>();
 builder.Services.AddTransient<IMealPackageRepository, SqlServerMealPackageRepository>();
+builder.Services.AddTransient<IReservationRepository, SqlServerReservationRepository>();
 
 // dependency injection application services
 builder.Services.AddTransient<ICanteenService, CanteenService>();
 builder.Services.AddTransient<IMealService, MealService>();
 builder.Services.AddTransient<IMealPackageService, MealPackageService>();
+builder.Services.AddTransient<IReservationService, ReservationService>();
 
 // add databases
 builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application")));

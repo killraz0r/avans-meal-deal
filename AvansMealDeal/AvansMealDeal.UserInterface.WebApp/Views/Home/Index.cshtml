@@ -1,1 +1,18 @@
-﻿<h1>Avans Meal Deal</h1>
+﻿@using AvansMealDeal.Domain.Models
+
+<h1>Welkom bij Avans Meal Deal!</h1>
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    if (User.IsInRole(Role.Employee))
+    {
+        <h5>Met deze website kunnen maaltijdpakketten aangeboden worden aan studenten.</h5>
+    }
+    if (User.IsInRole(Role.Student))
+    {
+        <h5>Met deze website kan je een maaltijdpakket reserveren bij een van de kantines van Avans Hogeschool.</h5>
+    }
+}
+else
+{
+    <h5>Registreer of log in om door te gaan.</h5>
+}

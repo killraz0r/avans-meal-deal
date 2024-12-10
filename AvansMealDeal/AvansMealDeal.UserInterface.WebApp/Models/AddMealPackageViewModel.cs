@@ -24,9 +24,9 @@ namespace AvansMealDeal.UserInterface.WebApp.Models
 		[Display(Name = "Type")]
 		public MealPackageType MealPackageType { get; set; }
 
-		[Required(ErrorMessage = "Ophaaltijdstip van het maaltijdpakket ontbreekt")]
+		[Required(ErrorMessage = "Deadline van het maaltijdpakket ontbreekt")]
 		[DataType(DataType.DateTime)]
-		[Display(Name = "Ophaaltijdstip")]
+		[Display(Name = "Deadline")]
 		[PickupDeadlineValidation]
 		public DateTimeOffset? PickupDeadline { get; set; }
 

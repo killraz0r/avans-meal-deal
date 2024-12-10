@@ -1,7 +1,7 @@
 ﻿@using AvansMealDeal.Domain.Models
-@model MealPackage
+@model StudentMealPackageDetailsViewModel
 
-@await Html.PartialAsync("_MealPackage", Model)
+@await Html.PartialAsync("_MealPackage", Model.MealPackage)
 <br />
 <!-- meals inside the meal package -->
 <h3>Producten (voorbeeld):</h3>
@@ -14,7 +14,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var meal in Model.Meals.Select(x => x.Meal))
+		@foreach (var meal in Model.MealPackage.Meals.Select(x => x.Meal))
 		{
 			@await Html.PartialAsync("_StudentMealPackageMeal", meal)
 		}
@@ -22,3 +22,24 @@
 </table>
 <br />
 <h6>De bovenstaande maaltijden zijn een voorbeeld van de inhoud van het maaltijdpakket, de daadwerkelijke inhoud kan afwijken.</h6>
+
+@if (Model.MealPackage.Reservation == null)
+{
+	<form asp-action="Reserve" method="post">
+		<!-- meal package id needed to submit form -->
+		<input type="hidden" asp-for="Id" value="@Model.MealPackage.Id" />
+		<!-- planned pickup -->
+		@{
+			// planned pickup input should be between now and the pickup deadline
+			var now = DateTimeOffset.Now;
+			var minValue = now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm"); // add five minutes for better user experience (otherwise, planned pickup could be in the past when user submits form)
+			var maxValue = Model.MealPackage.PickupDeadline.ToString("yyyy-MM-ddTHH:mm");
+		}
+		<label asp-for="PlannedPickup">Ophaaltijdstip:</label>
+		<input asp-for="PlannedPickup" min="@minValue" max="@maxValue" value="@maxValue" type="datetime-local" />
+		<br />
+		<button>Reserveer</button>
+		<br />
+		<span asp-validation-for="PlannedPickup"></span>
+	</form>
+}
