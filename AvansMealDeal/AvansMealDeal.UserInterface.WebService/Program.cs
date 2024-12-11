@@ -6,6 +6,7 @@ using AvansMealDeal.Infrastructure.Application.SQLServer.Repositories;
 using AvansMealDeal.Infrastructure.Identity.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using AvansMealDeal.UserInterface.WebService.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddTransient<IReservationService, ReservationService>();
 builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application"), sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Application.SQLServer")));
 builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Identity"), sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Identity.SQLServer")));
 
+GraphQL.AddGraphQL(builder.Services);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,5 +44,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGraphQL("/graphql");
 
 app.Run();

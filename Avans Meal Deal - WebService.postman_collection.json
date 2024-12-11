@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "b8d7d00d-ed2d-457e-b5b7-e1fc262c35b8",
+		"name": "Avans Meal Deal - WebService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40366459"
+	},
+	"item": [
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MealPackageId\": 1,\r\n    \"StudentId\": \"1\",\r\n    \"PlannedPickup\": \"2024-12-25T00:00:00+01:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7212/reservation",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/reservation",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/reservation/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/reservation/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/reservation/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"reservation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal packages",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/mealpackage",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"mealpackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/mealpackage",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"mealpackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/mealpackage/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"mealpackage",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/mealpackage/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"mealpackage",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7212/mealpackage/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7212",
+							"path": [
+								"mealpackage",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GraphQL (meal packages)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    mealPackages {\r\n        id\r\n        name\r\n        price\r\n        mealPackageType\r\n        pickupDeadline\r\n        meals {\r\n            meal {\r\n                id\r\n                name\r\n                containsAlcohol\r\n            }\r\n        }\r\n        reservation {\r\n            id\r\n            studentId\r\n            plannedPickup\r\n        }\r\n        canteen {\r\n            id\r\n            city\r\n            address\r\n            offersHotMeals\r\n        }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7212/graphql",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7212",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

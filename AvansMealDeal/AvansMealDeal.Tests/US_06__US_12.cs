@@ -6,17 +6,23 @@ using Moq;
 
 namespace AvansMealDeal.Tests
 {
-    public class US_06
+    // US_01 is the website version of the user story, US_12 is the mobile version of the user story
+    public class US_06__US_12
     {
         private readonly IMealPackageService mealPackageService;
         private readonly Mock<IMealPackageRepository> mealPackageRepositoryMock;
         // list of meal packages inside the repository
         private readonly List<MealPackage> mealPackages = new List<MealPackage>
         {
-            new MealPackage { Id = 1, CanteenId = 1, MealPackageType = MealPackageType.Bread, Name = "Brood", Price = 1.00m, PickupDeadline = DateTimeOffset.Now.AddDays(2) }
+            new MealPackage { Id = 1, CanteenId = 1, MealPackageType = MealPackageType.Bread, Name = "Brood", Price = 1.00m, PickupDeadline = DateTimeOffset.Now.AddDays(2),
+            Meals =
+                [
+                    new MealPackageItem { Meal = new Meal { Name = "Croissant", ContainsAlcohol = false } },
+                    new MealPackageItem { Meal = new Meal { Name = "Stokbrood", ContainsAlcohol = false } },
+                ]}
         };
 
-        public US_06()
+        public US_06__US_12()
         {
             var canteenRepositoryMock = new Mock<ICanteenRepository>();
             mealPackageRepositoryMock = new Mock<IMealPackageRepository>();
@@ -29,7 +35,7 @@ namespace AvansMealDeal.Tests
         }
 
         [Fact]
-        public async Task ReadById_ValidId_ReturnsMealPackage()
+        public async Task ReadById_ValidId_ReturnsMealPackageWithMeals()
         {
             // arrange
             var id = 1;
@@ -39,6 +45,9 @@ namespace AvansMealDeal.Tests
 
             // assert
             Assert.NotNull(mealPackage);
+            Assert.Equal(2, mealPackage.Meals.Count);
+            Assert.Contains(mealPackage.Meals.Select(x => x.Meal), y => y.Name == "Croissant");
+            Assert.Contains(mealPackage.Meals.Select(x => x.Meal), y => y.Name == "Stokbrood");
         }
 
         [Fact]
