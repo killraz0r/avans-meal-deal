@@ -6,7 +6,8 @@ using Moq;
 
 namespace AvansMealDeal.Tests
 {
-    public class US_01
+    // US_01 is the website version of the user story, US_12 is the mobile version of the user story
+    public class US_01__US_12
     {
         private readonly IMealPackageService mealPackageService;
         private readonly Mock<IMealPackageRepository> mealPackageRepositoryMock;
@@ -21,7 +22,7 @@ namespace AvansMealDeal.Tests
                                 Reservation = new Reservation { StudentId = "2", PlannedPickup = DateTimeOffset.Now.AddDays(-1) } },
         };
 
-        public US_01()
+        public US_01__US_12()
         {
             var canteenRepositoryMock = new Mock<ICanteenRepository>();
             mealPackageRepositoryMock = new Mock<IMealPackageRepository>();
