@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AvansMealDeal.UserInterface.WebService.Controllers
 {
+    // Richardson Maturity Model level (RMM) 2 endpoint for meal packages
     [Route("mealpackage")]
     public class MealPackageController : ControllerBase
     {

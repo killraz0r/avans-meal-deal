@@ -102,5 +102,10 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer.Repositories
                 .OrderBy(x => x.PickupDeadline)
                 .ToListAsync();
         }
+
+        public IQueryable<MealPackage> Read() 
+        { 
+            return dbContext.MealsPackages.AsQueryable(); 
+        }
     }
 }
