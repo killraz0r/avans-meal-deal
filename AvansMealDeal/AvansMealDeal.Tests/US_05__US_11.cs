@@ -6,13 +6,14 @@ using Moq;
 
 namespace AvansMealDeal.Tests
 {
-    public class US_05
+    // US_05 is the website version of the user story, US_11 is the mobile version of the user story
+    public class US_05__US_11
     {
         private readonly IReservationService reservationService;
         private readonly Mock<IReservationRepository> reservationRepositoryMock;
         private readonly Mock<IMealPackageRepository> mealPackageRepositoryMock;
 
-        public US_05()
+        public US_05__US_11()
         {
             reservationRepositoryMock = new Mock<IReservationRepository>();
             mealPackageRepositoryMock = new Mock<IMealPackageRepository>();

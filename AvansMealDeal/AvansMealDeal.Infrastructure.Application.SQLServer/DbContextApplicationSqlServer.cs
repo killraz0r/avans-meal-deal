@@ -7,15 +7,12 @@ namespace AvansMealDeal.Infrastructure.Application.SQLServer
     public class DbContextApplicationSqlServer(DbContextOptions<DbContextApplicationSqlServer> options) : DbContext(options)
     {
         // tables
-        // disable warning CS8618 so that Entity Framework works as expected
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        public DbSet<Canteen> Canteens { get; set; }
-        public DbSet<Meal> Meals { get; set; }
-        public DbSet<MealPackage> MealsPackages { get; set; }
-        public DbSet<MealPackageItem> MealPackageItems { get; set; }
+        public required DbSet<Canteen> Canteens { get; set; }
+        public required DbSet<Meal> Meals { get; set; }
+        public required DbSet<MealPackage> MealsPackages { get; set; }
+        public required DbSet<MealPackageItem> MealPackageItems { get; set; }
 
-        public DbSet<Reservation> Reservations { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        public required DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

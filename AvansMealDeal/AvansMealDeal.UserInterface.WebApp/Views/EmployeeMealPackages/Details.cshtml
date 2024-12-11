@@ -79,11 +79,13 @@
 				}
 			</tbody>
 		</table>
+		<br />
+		<h6>De bovenstaande maaltijden zijn een voorbeeld van de inhoud van het maaltijdpakket, de daadwerkelijke inhoud kan afwijken.</h6>
 
 		<!-- only show edit/remove buttons if employee is allowed to -->
 		@if (!Model.HasReservation && Model.MatchesCanteen(employeeCanteenId))
 		{
-			<button>Bewerk</button>
+			<button class="btn btn-lg btn-primary">Bewerk</button>
 		}
 		else if (Model.HasReservation)
 		{
@@ -98,7 +100,7 @@
 	{
 		<form asp-action="Remove" method="post">
 			<input type="hidden" asp-for="Id" />
-			<button>Verwijder</button>
+			<button class="btn btn-lg btn-danger">Verwijder</button>
 		</form>
 	}
 }
