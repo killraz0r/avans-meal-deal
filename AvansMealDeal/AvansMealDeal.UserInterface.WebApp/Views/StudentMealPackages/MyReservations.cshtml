@@ -1,6 +1,7 @@
 ﻿@using AvansMealDeal.Domain.Models
 @model ICollection<MealPackage>
 
+<h1>Mijn gereserveerde maaltijdpakketten</h1>
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)

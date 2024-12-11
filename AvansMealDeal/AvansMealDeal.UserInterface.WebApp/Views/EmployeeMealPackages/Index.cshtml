@@ -1,6 +1,8 @@
 ﻿@using AvansMealDeal.Domain.Models
 @model ICollection<MealPackage>
 
+<a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Add">Voeg maaltijdpakket toe</a>
+<h1>Maaltijdpakketten eigen kantine</h1>
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
@@ -8,4 +10,3 @@
     <br />
 }
 <br />
-<a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Add">Voeg maaltijdpakket toe</a>

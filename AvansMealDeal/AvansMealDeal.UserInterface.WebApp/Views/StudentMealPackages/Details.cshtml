@@ -38,7 +38,7 @@
 		<label asp-for="PlannedPickup">Ophaaltijdstip:</label>
 		<input asp-for="PlannedPickup" min="@minValue" max="@maxValue" value="@maxValue" type="datetime-local" />
 		<br />
-		<button>Reserveer</button>
+		<button class="btn btn-lg btn-primary">Reserveer</button>
 		<br />
 		<span asp-validation-for="PlannedPickup"></span>
 	</form>

@@ -2,6 +2,8 @@
 @using AvansMealDeal.UserInterface.WebApp.Helpers
 @model ICollection<Meal>
 
+<a asp-area="" asp-controller="Meals" asp-action="Add">Voeg maaltijd toe</a>
+<h1>Maaltijden</h1>
 @foreach (var meal in Model)
 {
     <h3>Naam: @meal.Name</h3>
@@ -13,5 +15,3 @@
     }
     <br />
 }
-
-<a asp-area="" asp-controller="Meals" asp-action="Add">Voeg maaltijd toe</a>
