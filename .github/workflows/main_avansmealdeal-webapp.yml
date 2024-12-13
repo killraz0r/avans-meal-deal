@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - avansmealdeal-webapp
+name: Web App test and deploy
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
 
     steps:
@@ -21,21 +21,27 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      - name: Restore dependencies
+        run: dotnet restore AvansMealDeal/AvansMealDeal.sln
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build AvansMealDeal/AvansMealDeal.sln --configuration Release
+
+      - name: Unit tests
+        run: dotnet test AvansMealDeal/AvansMealDeal.Tests/AvansMealDeal.Tests.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish AvansMealDeal/AvansMealDeal.UserInterface.WebApp/AvansMealDeal.UserInterface.WebApp.csproj --configuration Release -o "${{github.workspace}}/publish"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{github.workspace}}/myapp
 
   deploy:
     runs-on: windows-latest
-    needs: build
+    needs: test
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -61,5 +67,5 @@ jobs:
         with:
           app-name: 'avansmealdeal-webapp'
           slot-name: 'Production'
-          package: .
+          package: ${{github.workspace}}/publish
           
