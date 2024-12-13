@@ -26,9 +26,9 @@ builder.Services.AddTransient<IReservationService, ReservationService>();
 
 // add databases
 builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application") ?? builder.Configuration.GetConnectionString("Databases_Application"),
-    sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Application.SQLServer"))); // needed to deploy migrations locally
+    sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Application.SQLServer"))); // needed to deploy migrations
 builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Identity") ?? builder.Configuration.GetConnectionString("Databases_Identity"),
-    sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Identity.SQLServer"))); // needed to deploy migrations locally
+    sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Identity.SQLServer"))); // needed to deploy migrations
 
 GraphQL.AddGraphQL(builder.Services);
 
