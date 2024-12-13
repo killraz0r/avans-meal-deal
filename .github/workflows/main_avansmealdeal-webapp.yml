@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'avansmealdeal-webapp'
           slot-name: 'Production'
-          package: ${{github.workspace}}/webapp-publish
+          package: webapp-publish
           
