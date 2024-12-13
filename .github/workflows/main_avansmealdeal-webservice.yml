@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  dotnet-steps:
     runs-on: windows-latest
 
     steps:
@@ -36,9 +36,21 @@ jobs:
           name: webservice-publish
           path: ${{github.workspace}}/webservice-publish
 
-  deploy:
+      - name: Install EF migrations tool
+        run: dotnet tool install --global dotnet-ef
+      
+      - name: Make EF migrations tool accessible
+        run: echo "${{ github.workspace }}/.dotnet/tools" >> $GITHUB_PATH
+      
+      - name: Deploy EF migrations application database
+        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Application.SQLServer/AvansMealDeal.Infrastructure.Application.SQLServer.csproj database update --context DbContextApplicationSqlServer --connection "$DATABASES_APPLICATION"
+
+      - name: Deploy EF migrations identity database
+        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Identity.SQLServer/AvansMealDeal.Infrastructure.Identity.SQLServer.csproj database update --context DbContextIdentitySqlServer --connection "$DATABASES_IDENTITY"
+
+  azure-steps:
     runs-on: windows-latest
-    needs: test
+    needs: dotnet-steps
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -57,18 +69,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1B62744FB8C14096821C79DB31200966 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_571A095842764B348075294222B85601 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_08770DD2C0194B088713451C582DAB14 }}
-
-      - name: Install EF migrations tool
-        run: dotnet tool install --global dotnet-ef
-      
-      - name: Make EF migrations tool accessible
-        run: echo "${{ github.workspace }}/.dotnet/tools" >> $GITHUB_PATH
-      
-      - name: Deploy EF migrations application database
-        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Application.SQLServer/AvansMealDeal.Infrastructure.Application.SQLServer.csproj database update --context DbContextApplicationSqlServer --connection "$DATABASES_APPLICATION"
-
-      - name: Deploy EF migrations identity database
-        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Identity.SQLServer/AvansMealDeal.Infrastructure.Identity.SQLServer.csproj database update --context DbContextIdentitySqlServer --connection "$DATABASES_IDENTITY"
 
       - name: Deploy to Azure Web Service
         id: deploy-to-webapp
