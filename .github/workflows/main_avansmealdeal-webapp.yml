@@ -31,13 +31,13 @@ jobs:
         run: dotnet test AvansMealDeal/AvansMealDeal.Tests/AvansMealDeal.Tests.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish AvansMealDeal/AvansMealDeal.UserInterface.WebApp/AvansMealDeal.UserInterface.WebApp.csproj --configuration Release -o "${{github.workspace}}/publish"
+        run: dotnet publish AvansMealDeal/AvansMealDeal.UserInterface.WebApp/AvansMealDeal.UserInterface.WebApp.csproj --configuration Release -o "${{github.workspace}}/webapp-publish"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{github.workspace}}/myapp
+          name: webapp
+          path: ${{github.workspace}}/webapp-publish
 
   deploy:
     runs-on: windows-latest
@@ -52,7 +52,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: webapp
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'avansmealdeal-webapp'
           slot-name: 'Production'
-          package: ${{github.workspace}}/publish
+          package: ${{github.workspace}}/webapp-publish
           
