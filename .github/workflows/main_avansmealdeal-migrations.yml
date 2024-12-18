@@ -1,0 +1,40 @@
+name: EF migrations
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  migrations:
+    runs-on: windows-latest
+    env:
+      DATABASES_APPLICATION: ${{ secrets.DATABASES_APPLICATION }}
+      DATABASES_IDENTITY: ${{ secrets.DATABASES_IDENTITY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore AvansMealDeal/AvansMealDeal.sln
+
+      - name: Build with dotnet
+        run: dotnet build AvansMealDeal/AvansMealDeal.sln --configuration Release
+
+      - name: Install EF migrations tool
+        run: dotnet tool install --global dotnet-ef
+      
+      - name: Make EF migrations tool accessible
+        run: echo "${{ github.workspace }}/.dotnet/tools" >> $GITHUB_PATH
+      
+      - name: Deploy EF migrations application database
+        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Application.SQLServer/AvansMealDeal.Infrastructure.Application.SQLServer.csproj --startup-project AvansMealDeal/AvansMealDeal.UserInterface.WebApp/AvansMealDeal.UserInterface.WebApp.csproj database update --context DbContextApplicationSqlServer
+
+      - name: Deploy EF migrations identity database
+        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Identity.SQLServer/AvansMealDeal.Infrastructure.Identity.SQLServer.csproj --startup-project AvansMealDeal/AvansMealDeal.UserInterface.WebApp/AvansMealDeal.UserInterface.WebApp.csproj database update --context DbContextIdentitySqlServer

@@ -1,4 +1,4 @@
-name: Web Service test and deploy
+name: Web Service build, test and deploy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  dotnet-steps:
+  ci: #build, test
     runs-on: windows-latest
 
     steps:
@@ -36,21 +36,9 @@ jobs:
           name: webservice-publish
           path: ${{github.workspace}}/webservice-publish
 
-      - name: Install EF migrations tool
-        run: dotnet tool install --global dotnet-ef
-      
-      - name: Make EF migrations tool accessible
-        run: echo "${{ github.workspace }}/.dotnet/tools" >> $GITHUB_PATH
-      
-      - name: Deploy EF migrations application database
-        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Application.SQLServer/AvansMealDeal.Infrastructure.Application.SQLServer.csproj --startup-project AvansMealDeal/AvansMealDeal.UserInterface.WebService/AvansMealDeal.UserInterface.WebService.csproj database update --context DbContextApplicationSqlServer
-
-      - name: Deploy EF migrations identity database
-        run: dotnet ef --project AvansMealDeal/AvansMealDeal.Infrastructure.Identity.SQLServer/AvansMealDeal.Infrastructure.Identity.SQLServer.csproj --startup-project AvansMealDeal/AvansMealDeal.UserInterface.WebService/AvansMealDeal.UserInterface.WebService.csproj database update --context DbContextIdentitySqlServer
-
-  azure-steps:
+  cd: #deploy
     runs-on: windows-latest
-    needs: dotnet-steps
+    needs: ci
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
