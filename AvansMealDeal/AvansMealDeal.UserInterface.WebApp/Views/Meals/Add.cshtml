@@ -5,25 +5,28 @@
 	<div asp-validation-summary="All"></div>
     <form asp-action="Add" method="post">
 		<!-- name -->
-		<label asp-for="Name">Naam:</label>
-		<input asp-for="Name" />
-		<span asp-validation-for="Name"></span>
-		<br />
+		<div class="form-group">
+			<label asp-for="Name">Naam</label>
+			<input asp-for="Name" class="form-control" />
+			<span asp-validation-for="Name"></span>
+		</div>
 
 		<!-- contains alcohol -->
-		<label asp-for="ContainsAlcohol">Bevat alcohol?</label>
-		<select asp-for="ContainsAlcohol">
-			<option value="False">Nee</option>
-			<option value="True">Ja</option>
-		</select>
-		<span asp-validation-for="ContainsAlcohol"></span>
-		<br />
+		<div class="form-group">
+			<label asp-for="ContainsAlcohol">Bevat alcohol?</label>
+			<select asp-for="ContainsAlcohol" class="form-control">
+				<option value="False">Nee</option>
+				<option value="True">Ja</option>
+			</select>
+			<span asp-validation-for="ContainsAlcohol"></span>
+		</div>
 
 		<!-- photo -->
-		<label asp-for="Photo">Foto:</label>
-		<input asp-for="Photo" type="file">
-		<span asp-validation-for="Photo"></span>
-		<br />
+		<div class="form-group">
+			<label asp-for="Photo">Foto:</label>
+			<input asp-for="Photo" type="file" class="form-control-file">
+			<span asp-validation-for="Photo"></span>
+		</div>
 
 		<button class="btn btn-lg btn-primary">Voeg toe</button>
 	</form>

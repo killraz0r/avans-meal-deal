@@ -3,10 +3,12 @@
 
 <a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Add">Voeg maaltijdpakket toe</a>
 <h1>Maaltijdpakketten eigen kantine</h1>
+<br />
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
-        <a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
+    <a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
+    <br />
     <br />
 }
 <br />

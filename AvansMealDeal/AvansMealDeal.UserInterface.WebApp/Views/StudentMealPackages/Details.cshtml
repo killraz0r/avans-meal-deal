@@ -4,8 +4,8 @@
 @await Html.PartialAsync("_MealPackage", Model.MealPackage)
 <br />
 <!-- meals inside the meal package -->
-<h3>Producten (voorbeeld):</h3>
-<table>
+<h3>Maaltijden (voorbeeld):</h3>
+<table class="table">
 	<thead>
 		<tr>
 			<th>Foto   </th>
@@ -35,9 +35,11 @@
 			var minValue = now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm"); // add five minutes for better user experience (otherwise, planned pickup could be in the past when user submits form)
 			var maxValue = Model.MealPackage.PickupDeadline.ToString("yyyy-MM-ddTHH:mm");
 		}
-		<label asp-for="PlannedPickup">Ophaaltijdstip:</label>
-		<input asp-for="PlannedPickup" min="@minValue" max="@maxValue" value="@maxValue" type="datetime-local" />
-		<br />
+		<div class="form-group">
+			<label asp-for="PlannedPickup">Ophaaltijdstip:</label>
+			<input asp-for="PlannedPickup" min="@minValue" max="@maxValue" value="@maxValue" type="datetime-local" class="form-control" />
+			<br />
+		</div>
 		<button class="btn btn-lg btn-primary">Reserveer</button>
 		<br />
 		<span asp-validation-for="PlannedPickup"></span>

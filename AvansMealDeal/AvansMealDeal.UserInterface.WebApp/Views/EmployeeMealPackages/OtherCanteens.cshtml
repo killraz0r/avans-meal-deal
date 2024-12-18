@@ -2,9 +2,11 @@
 @model ICollection<MealPackage>
 
 <h1>Maaltijdpakketten andere kantines</h1>
+<br />
 @foreach (var mealPackage in Model)
 {
     @await Html.PartialAsync("_MealPackage", mealPackage)
     <a asp-area="" asp-controller="EmployeeMealPackages" asp-action="Details" asp-route-id="@mealPackage.Id">Details</a>
+    <br />
     <br />
 }
