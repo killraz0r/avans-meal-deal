@@ -25,9 +25,9 @@ builder.Services.AddTransient<IMealPackageService, MealPackageService>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
 
 // add databases
-builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Application") ?? builder.Configuration.GetConnectionString("Databases_Application") ?? Environment.GetEnvironmentVariable("DATABASES_APPLICATION"),
+builder.Services.AddDbContext<DbContextApplicationSqlServer>(x => x.UseSqlServer(Environment.GetEnvironmentVariable("DATABASES_APPLICATION") ?? builder.Configuration.GetConnectionString("Databases_Application") ?? builder.Configuration.GetValue<string>("Databases:Application"),
     sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Application.SQLServer"))); // needed to deploy migrations
-builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(builder.Configuration.GetValue<string>("Databases:Identity") ?? builder.Configuration.GetConnectionString("Databases_Identity") ?? Environment.GetEnvironmentVariable("DATABASES_IDENTITY"),
+builder.Services.AddDbContext<DbContextIdentitySqlServer>(x => x.UseSqlServer(Environment.GetEnvironmentVariable("DATABASES_IDENTITY") ?? builder.Configuration.GetConnectionString("Databases_Identity") ?? builder.Configuration.GetValue<string>("Databases:Identity"),
     sqlServer => sqlServer.MigrationsAssembly("AvansMealDeal.Infrastructure.Identity.SQLServer"))); // needed to deploy migrations
 
 GraphQL.AddGraphQL(builder.Services);

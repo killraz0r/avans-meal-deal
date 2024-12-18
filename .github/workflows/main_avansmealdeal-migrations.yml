@@ -20,6 +20,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
+      
+      - name: Print secrets
+        run: |
+          echo "DATABASES_APPLICATION is: ${DATABASES_APPLICATION:0:10}..."
+          echo "DATABASES_IDENTITY is: ${DATABASES_IDENTITY:0:10}..."
 
       - name: Restore dependencies
         run: dotnet restore AvansMealDeal/AvansMealDeal.sln
